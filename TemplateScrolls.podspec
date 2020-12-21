@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TemplateScrolls'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of TemplateScrolls.'
+  s.version          = '1.0.0'
+  s.summary          = '不需要手动实现 TableView CollectionView 的 dataSource, delegate 协议的滚动列表'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,9 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+    系统的 Table Collection View 非常实用，但是总是有一大堆代理方法必须要写。
+    该组件默认实现了所有的代理方法，使用时免写了大量的代理方法，只需要少量的配置代码。
+    并且还支持 TableView 自适应高度、高度缓存.
                        DESC
 
   s.homepage         = 'https://github.com/GG/TemplateScrolls'
@@ -28,7 +30,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/GG/TemplateScrolls.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
   s.source_files = 'TemplateScrolls/Classes/**/*'
   
@@ -37,6 +39,7 @@ TODO: Add long description of the pod here.
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.frameworks = 'UIKit'
+  s.dependency 'UITableView+FDTemplateLayoutCell', '1.6.0'
+  
 end

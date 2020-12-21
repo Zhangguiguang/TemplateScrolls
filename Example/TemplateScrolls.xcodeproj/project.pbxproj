@@ -37,7 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		01FF10C6703B263ACD3598A7 /* TemplateScrolls.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = TemplateScrolls.podspec; path = ../TemplateScrolls.podspec; sourceTree = "<group>"; };
+		01FF10C6703B263ACD3598A7 /* TemplateScrolls.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TemplateScrolls.podspec; path = ../TemplateScrolls.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		2C00D2FAE1461F31B38378F3 /* Pods-TemplateScrolls_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Tests/Pods-TemplateScrolls_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		4A809BF2DE7F20AE74ECA2E1 /* Pods-TemplateScrolls_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Tests.release.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Tests/Pods-TemplateScrolls_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		52277BC14063DD5D7094691F /* Pods_TemplateScrolls_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TemplateScrolls_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,9 +62,9 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8248A03EC29DF1E3EE5ABBA5 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		8248A03EC29DF1E3EE5ABBA5 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		9C4A5F9672B5688E7EAC1163 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		9C4A5F9672B5688E7EAC1163 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C8807D7BC7C59907C7077112 /* Pods-TemplateScrolls_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Example.release.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Example/Pods-TemplateScrolls_Example.release.xcconfig"; sourceTree = "<group>"; };
 		FF015C080BA1C39CDECB24A7 /* Pods_TemplateScrolls_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TemplateScrolls_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -193,7 +193,6 @@
 				2C00D2FAE1461F31B38378F3 /* Pods-TemplateScrolls_Tests.debug.xcconfig */,
 				4A809BF2DE7F20AE74ECA2E1 /* Pods-TemplateScrolls_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -258,6 +257,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -325,10 +325,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TemplateScrolls_Example/Pods-TemplateScrolls_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/TemplateScrolls/TemplateScrolls.framework",
+				"${BUILT_PRODUCTS_DIR}/UITableView+FDTemplateLayoutCell/UITableView_FDTemplateLayoutCell.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TemplateScrolls.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITableView_FDTemplateLayoutCell.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

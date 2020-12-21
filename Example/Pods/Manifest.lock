@@ -1,15 +1,22 @@
 PODS:
-  - TemplateScrolls (0.1.0)
+  - TemplateScrolls (1.0.0):
+    - "UITableView+FDTemplateLayoutCell (= 1.6.0)"
+  - "UITableView+FDTemplateLayoutCell (1.6)"
 
 DEPENDENCIES:
   - TemplateScrolls (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - "UITableView+FDTemplateLayoutCell"
 
 EXTERNAL SOURCES:
   TemplateScrolls:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TemplateScrolls: 3eaf51e456fe13302841065af3f62153f912b4a3
+  TemplateScrolls: 80e319ceb32e577ea8d4dd6a960ae66817935538
+  "UITableView+FDTemplateLayoutCell": 5c949b4a5059c404b442926c0e80f81d10a2d66f
 
 PODFILE CHECKSUM: 332df20d6f09237cd736da561349b9b23b37fa24
 

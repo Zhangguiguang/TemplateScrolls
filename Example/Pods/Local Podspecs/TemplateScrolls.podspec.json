@@ -1,8 +1,8 @@
 {
   "name": "TemplateScrolls",
-  "version": "0.1.0",
-  "summary": "A short description of TemplateScrolls.",
-  "description": "TODO: Add long description of the pod here.",
+  "version": "1.0.0",
+  "summary": "不需要手动实现 TableView CollectionView 的 dataSource, delegate 协议的滚动列表",
+  "description": "系统的 Table Collection View 非常实用，但是总是有一大堆代理方法必须要写。\n该组件默认实现了所有的代理方法，使用时免写了大量的代理方法，只需要少量的配置代码。\n并且还支持 TableView 自适应高度、高度缓存.",
   "homepage": "https://github.com/GG/TemplateScrolls",
   "license": {
     "type": "MIT",
@@ -13,10 +13,16 @@
   },
   "source": {
     "git": "https://github.com/GG/TemplateScrolls.git",
-    "tag": "0.1.0"
+    "tag": "1.0.0"
   },
   "platforms": {
-    "ios": "9.0"
+    "ios": "10.0"
   },
-  "source_files": "TemplateScrolls/Classes/**/*"
+  "source_files": "TemplateScrolls/Classes/**/*",
+  "frameworks": "UIKit",
+  "dependencies": {
+    "UITableView+FDTemplateLayoutCell": [
+      "1.6.0"
+    ]
+  }
 }
