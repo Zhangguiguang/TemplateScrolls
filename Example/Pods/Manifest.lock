@@ -1,0 +1,16 @@
+PODS:
+  - TemplateScrolls (0.1.0)
+
+DEPENDENCIES:
+  - TemplateScrolls (from `../`)
+
+EXTERNAL SOURCES:
+  TemplateScrolls:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  TemplateScrolls: 3eaf51e456fe13302841065af3f62153f912b4a3
+
+PODFILE CHECKSUM: 332df20d6f09237cd736da561349b9b23b37fa24
+
+COCOAPODS: 1.8.4

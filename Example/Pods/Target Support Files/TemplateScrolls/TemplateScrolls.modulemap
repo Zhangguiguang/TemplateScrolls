@@ -1,0 +1,6 @@
+framework module TemplateScrolls {
+  umbrella header "TemplateScrolls-umbrella.h"
+
+  export *
+  module * { export * }
+}
