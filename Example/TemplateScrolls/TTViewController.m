@@ -7,8 +7,9 @@
 //
 
 #import "TTViewController.h"
+#import <TTMutableArray/TTMutableArray.h>
 
-@interface TTViewController ()
+@interface TTViewController () <TTMutableArrayObserver>
 
 @end
 
@@ -17,13 +18,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
+    TTMutableArray *array = [TTMutableArray array];
+    array.observer = self;
+    
+    [array addObject:@"jdios"];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)mutableArray:(NSMutableArray *)array didInsertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
+    NSLog(@"insert %@, ", objects);
 }
 
 @end

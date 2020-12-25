@@ -1,0 +1,6 @@
+framework module TTMutableArray {
+  umbrella header "TTMutableArray-umbrella.h"
+
+  export *
+  module * { export * }
+}

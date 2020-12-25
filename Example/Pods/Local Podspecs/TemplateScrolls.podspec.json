@@ -23,6 +23,9 @@
   "dependencies": {
     "UITableView+FDTemplateLayoutCell": [
       "1.6.0"
+    ],
+    "TTMutableArray": [
+
     ]
   }
 }

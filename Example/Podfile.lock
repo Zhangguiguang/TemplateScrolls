@@ -1,6 +1,8 @@
 PODS:
   - TemplateScrolls (1.0.0):
+    - TTMutableArray
     - "UITableView+FDTemplateLayoutCell (= 1.6.0)"
+  - TTMutableArray (1.0.0)
   - "UITableView+FDTemplateLayoutCell (1.6)"
 
 DEPENDENCIES:
@@ -8,6 +10,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - TTMutableArray
     - "UITableView+FDTemplateLayoutCell"
 
 EXTERNAL SOURCES:
@@ -15,7 +18,8 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  TemplateScrolls: 80e319ceb32e577ea8d4dd6a960ae66817935538
+  TemplateScrolls: 395a02b0457c24aeba5298149b619c1147fc7fff
+  TTMutableArray: 31558568689a056544c6b8a0302d865998299c1e
   "UITableView+FDTemplateLayoutCell": 5c949b4a5059c404b442926c0e80f81d10a2d66f
 
 PODFILE CHECKSUM: 332df20d6f09237cd736da561349b9b23b37fa24
