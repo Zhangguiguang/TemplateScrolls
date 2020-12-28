@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "TTViewTemplate.h"
 
 FOUNDATION_EXPORT double TemplateScrollsVersionNumber;
 FOUNDATION_EXPORT const unsigned char TemplateScrollsVersionString[];

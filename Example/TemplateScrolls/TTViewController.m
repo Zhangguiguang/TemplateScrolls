@@ -8,8 +8,11 @@
 
 #import "TTViewController.h"
 #import <TTMutableArray/TTMutableArray.h>
+#import <TemplateScrolls/TTViewTemplate.h>
 
-@interface TTViewController () <TTMutableArrayObserver>
+@interface TTViewController () <
+//TTMutableArrayObserver,
+UITableViewDelegate>
 
 @end
 
@@ -19,9 +22,14 @@
 {
     [super viewDidLoad];
     TTMutableArray *array = [TTMutableArray array];
-    array.observer = self;
+//    array.observer = self;
     
     [array addObject:@"jdios"];
+    
+    TTCellTemplate<Class<UITableViewDelegate>, UITableViewCell *> *template = [TTCellTemplate new];
+    
+    template.viewClass = UIView.class;
+    
 }
 
 - (void)mutableArray:(NSMutableArray *)array didInsertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes {
