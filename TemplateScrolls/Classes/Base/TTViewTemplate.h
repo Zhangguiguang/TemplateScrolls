@@ -33,18 +33,21 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-@interface TTCellTemplate <ViewClass, CellType> : TTViewTemplate <ViewClass>
+/**
+ Cell 的配置类
+ */
+@interface TTCellTemplate <CellClass, UICellType> : TTViewTemplate <CellClass>
 
 /**
  可配置该 Cell 的UI渲染
  @discussion 该 block 会在 ConfigTableViewCell.refreshUI 之后执行
  */
-@property (nonatomic, copy) void (^refreshUI)(NSIndexPath *indexPath, id data, CellType me);
+@property (nonatomic, copy) void (^refreshUI)(NSIndexPath *indexPath, id data, __kindof UICellType me);
 
 /**
  可配置该 Cell 将出现时的事件
  */
-@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, id data, CellType me);
+@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, id data, __kindof UICellType me);
 
 /**
  可配置该 Cell 被点击时的事件
@@ -53,7 +56,35 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+/**
+ Header Footer 的配置类
+ */
+@interface TTReusableViewTemplate <ViewClass, UIViewType> : TTViewTemplate <ViewClass>
 
+/**
+ 可配置该 View 的UI渲染
+ @discussion 该 block 会在 ReusableView.refreshUI 之后执行
+ */
+@property (nonatomic, copy) void (^refreshUI)(NSInteger section, id data, __kindof UIViewType me);
+
+/**
+ 可配置该 View 将出现时的事件
+ */
+@property (nonatomic, copy) void (^willDisplay)(NSInteger section, id data, __kindof UIViewType me);
+
+
+@end
+
+
+
+@interface TTSectionTemplate <CellTemplate, ResuableViewTemplate> : NSObject
+
+@property (nonatomic, strong) ResuableViewTemplate header;
+@property (nonatomic, strong) ResuableViewTemplate footer;
+
+@property (nonatomic, readonly) NSMutableArray<CellTemplate> *cellArray;
+
+@end
 
 
 NS_ASSUME_NONNULL_END

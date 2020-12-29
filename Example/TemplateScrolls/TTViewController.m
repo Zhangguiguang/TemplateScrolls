@@ -8,7 +8,7 @@
 
 #import "TTViewController.h"
 #import <TTMutableArray/TTMutableArray.h>
-#import <TemplateScrolls/TTViewTemplate.h>
+#import <TemplateScrolls/TTTableView.h>
 
 @interface TTViewController () <
 //TTMutableArrayObserver,
@@ -29,6 +29,9 @@ UITableViewDelegate>
     TTCellTemplate<Class<UITableViewDelegate>, UITableViewCell *> *template = [TTCellTemplate new];
     
     template.viewClass = UIView.class;
+    
+    TTTableView *tableView = [TTTableView new];
+    tableView.sectionArray;
     
 }
 

@@ -14,5 +14,14 @@
 
 @implementation TTCellTemplate
 
+@end
+
+
+@implementation TTReusableViewTemplate
+
+@end
+
+
+@implementation TTSectionTemplate
 
 @end
