@@ -13,11 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 typedef TTCellTemplate<Class<UICollectionViewDelegate>, UICollectionViewCell *> TTCollectionCellTemplate;
 typedef TTReusableViewTemplate<Class<UICollectionViewDataSource>, UICollectionReusableView *> TTCollectionReusableViewTemplate;
 typedef TTSectionTemplate<TTCollectionCellTemplate *, TTCollectionReusableViewTemplate *> TTCollectionSectionTemplate;
-typedef NSMutableArray<TTCollectionSectionTemplate *> TTCollectionSectionArray;
+typedef NSMutableArray<TTCollectionSectionTemplate *> TTCollectionTemplateArray;
 
 @interface TTCollectionView : UICollectionView
 
-@property (nonatomic, readonly) TTCollectionSectionArray *sectionArray;
+@property (nonatomic, readonly) TTCollectionTemplateArray *sectionArray;
 
 @end
 

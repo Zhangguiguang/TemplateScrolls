@@ -10,9 +10,12 @@
 #endif
 #endif
 
+#import "TTScrollProtocol.h"
 #import "TTViewTemplate.h"
 #import "TTCollectionView.h"
+#import "TTTableReusableView.h"
 #import "TTTableView.h"
+#import "TTTableViewCell.h"
 
 FOUNDATION_EXPORT double TemplateScrollsVersionNumber;
 FOUNDATION_EXPORT const unsigned char TemplateScrollsVersionString[];

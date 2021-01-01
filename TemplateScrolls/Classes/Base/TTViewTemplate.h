@@ -39,12 +39,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TTCellTemplate <CellClass, UICellType> : TTViewTemplate <CellClass>
 
 /**
- 可配置该 Cell 的UI渲染
- @discussion 该 block 会在 ConfigTableViewCell.refreshUI 之后执行
- */
-@property (nonatomic, copy) void (^refreshUI)(NSIndexPath *indexPath, id data, __kindof UICellType me);
-
-/**
  可配置该 Cell 将出现时的事件
  */
 @property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, id data, __kindof UICellType me);
@@ -62,12 +56,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TTReusableViewTemplate <ViewClass, UIViewType> : TTViewTemplate <ViewClass>
 
 /**
- 可配置该 View 的UI渲染
- @discussion 该 block 会在 ReusableView.refreshUI 之后执行
- */
-@property (nonatomic, copy) void (^refreshUI)(NSInteger section, id data, __kindof UIViewType me);
-
-/**
  可配置该 View 将出现时的事件
  */
 @property (nonatomic, copy) void (^willDisplay)(NSInteger section, id data, __kindof UIViewType me);
@@ -79,8 +67,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TTSectionTemplate <CellTemplate, ResuableViewTemplate> : NSObject
 
-@property (nonatomic, strong) ResuableViewTemplate header;
-@property (nonatomic, strong) ResuableViewTemplate footer;
+@property (null_resettable, nonatomic, strong) ResuableViewTemplate header;
+@property (null_resettable, nonatomic, strong) ResuableViewTemplate footer;
 
 @property (nonatomic, readonly) NSMutableArray<CellTemplate> *cellArray;
 

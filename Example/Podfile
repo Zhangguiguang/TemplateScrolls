@@ -4,6 +4,8 @@ platform :ios, '9.0'
 
 target 'TemplateScrolls_Example' do
   pod 'TemplateScrolls', :path => '../'
+  
+  pod 'Masonry'
 
   target 'TemplateScrolls_Tests' do
     inherit! :search_paths

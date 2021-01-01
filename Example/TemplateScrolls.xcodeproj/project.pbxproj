@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		34052238259F292A000DE2D4 /* TTMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34052237259F292A000DE2D4 /* TTMessageCell.m */; };
+		34052276259F8426000DE2D4 /* log.json in Resources */ = {isa = PBXBuildFile; fileRef = 34052275259F8426000DE2D4 /* log.json */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -39,6 +41,9 @@
 /* Begin PBXFileReference section */
 		01FF10C6703B263ACD3598A7 /* TemplateScrolls.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TemplateScrolls.podspec; path = ../TemplateScrolls.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		2C00D2FAE1461F31B38378F3 /* Pods-TemplateScrolls_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Tests.debug.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Tests/Pods-TemplateScrolls_Tests.debug.xcconfig"; sourceTree = "<group>"; };
+		34052236259F292A000DE2D4 /* TTMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTMessageCell.h; sourceTree = "<group>"; };
+		34052237259F292A000DE2D4 /* TTMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTMessageCell.m; sourceTree = "<group>"; };
+		34052275259F8426000DE2D4 /* log.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = log.json; sourceTree = "<group>"; };
 		4A809BF2DE7F20AE74ECA2E1 /* Pods-TemplateScrolls_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Tests.release.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Tests/Pods-TemplateScrolls_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		52277BC14063DD5D7094691F /* Pods_TemplateScrolls_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TemplateScrolls_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		596247D3DEAE1A5BE6B97D37 /* Pods-TemplateScrolls_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Example.debug.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Example/Pods-TemplateScrolls_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -95,6 +100,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34052235259F28F7000DE2D4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				34052236259F292A000DE2D4 /* TTMessageCell.h */,
+				34052237259F292A000DE2D4 /* TTMessageCell.m */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
 		349D0243259631B800B94C6C /* WantSee */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,10 +155,12 @@
 		6003F593195388D20070C39A /* Example for TemplateScrolls */ = {
 			isa = PBXGroup;
 			children = (
+				34052235259F28F7000DE2D4 /* View */,
 				6003F59C195388D20070C39A /* TTAppDelegate.h */,
 				6003F59D195388D20070C39A /* TTAppDelegate.m */,
 				6003F5A5195388D20070C39A /* TTViewController.h */,
 				6003F5A6195388D20070C39A /* TTViewController.m */,
+				34052275259F8426000DE2D4 /* log.json */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				349D0243259631B800B94C6C /* WantSee */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -288,6 +304,7 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				34052276259F8426000DE2D4 /* log.json in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -332,12 +349,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TemplateScrolls_Example/Pods-TemplateScrolls_Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework",
 				"${BUILT_PRODUCTS_DIR}/TTMutableArray/TTMutableArray.framework",
 				"${BUILT_PRODUCTS_DIR}/TemplateScrolls/TemplateScrolls.framework",
 				"${BUILT_PRODUCTS_DIR}/UITableView+FDTemplateLayoutCell/UITableView_FDTemplateLayoutCell.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Masonry.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TTMutableArray.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TemplateScrolls.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITableView_FDTemplateLayoutCell.framework",
@@ -379,6 +398,7 @@
 				6003F59E195388D20070C39A /* TTAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* TTViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				34052238259F292A000DE2D4 /* TTMessageCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
