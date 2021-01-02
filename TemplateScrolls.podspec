@@ -23,11 +23,11 @@ Pod::Spec.new do |s|
     并且还支持 TableView 自适应高度、高度缓存.
                        DESC
 
-  s.homepage         = 'https://github.com/GG/TemplateScrolls'
+  s.homepage         = 'https://github.com/Zhangguiguang/TemplateScrolls'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'GG' => 'zhanggzgzhz@gmail.com' }
-  s.source           = { :git => 'https://github.com/GG/TemplateScrolls.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/Zhangguiguang/TemplateScrolls.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '9.0'
