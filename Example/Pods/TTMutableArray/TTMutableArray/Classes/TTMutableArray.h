@@ -11,10 +11,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol TTMutableArrayObserver <NSObject>
 
-@required
+@optional
 - (void)mutableArray:(NSMutableArray *)array didInsertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
 - (void)mutableArray:(NSMutableArray *)array didRemoveObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
 - (void)mutableArray:(NSMutableArray *)array didReplaceObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)mutableArray:(NSMutableArray *)array beReplacedObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
 
 @end
 

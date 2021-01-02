@@ -328,6 +328,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)mutableArray:(NSMutableArray *)array
     didInsertObjects:(NSArray<TTTableSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
+    [self _setObserverForSections:objects observer:self];
     [self _registerViewWithSections:objects];
     [self insertSections:indexes withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -335,20 +336,26 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 - (void)mutableArray:(NSMutableArray *)array
     didRemoveObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
+    [self _setObserverForSections:objects observer:nil];
     [self deleteSections:indexes withRowAnimation:UITableViewRowAnimationNone];
 }
 
 - (void)mutableArray:(NSMutableArray *)array
    didReplaceObjects:(NSArray<TTTableSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
+    [self _setObserverForSections:objects observer:self];
     [self _registerViewWithSections:objects];
     [self reloadSections:indexes withRowAnimation:UITableViewRowAnimationNone];
 }
 
+- (void)mutableArray:(NSMutableArray *)array
+   beReplacedObjects:(NSArray *)objects
+           atIndexes:(NSIndexSet *)indexes {
+    [self _setObserverForSections:objects observer:nil];
+}
+
 - (void)_registerViewWithSections:(NSArray<TTTableSectionTemplate *> *)sections {
     [sections enumerateObjectsUsingBlock:^(TTTableSectionTemplate *section, NSUInteger idx, BOOL *stop) {
-        // setObserver
-        [section setValue:self forKey:@"observer"];
         [self _registerReusableView:section.header isHeader:YES];
         [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
@@ -371,32 +378,49 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
+- (void)_setObserverForSections:(NSArray<TTTableSectionTemplate *> *)sections
+                       observer:(id<_TTSectionObserver>)observer {
+    [sections makeObjectsPerformSelector:@selector(setObserver:) withObject:observer];
+}
+
 #pragma mark - _TTSectionObserver
 
 - (void)section:(TTSectionTemplate *)section
  didInsertCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
-    [self insertRowsAtIndexPaths:[self _indexPathsFromSection:section indexes:indexes]
-                withRowAnimation:UITableViewRowAnimationNone];
+    NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
+    if (indexPaths.count > 0) {
+        [self insertRowsAtIndexPaths:indexPaths
+                    withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)section:(TTSectionTemplate *)section
  didRemoveCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
-    [self deleteRowsAtIndexPaths:[self _indexPathsFromSection:section indexes:indexes]
-                withRowAnimation:UITableViewRowAnimationNone];
+    NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
+    if (indexPaths.count > 0) {
+        [self deleteRowsAtIndexPaths:indexPaths
+                    withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)section:(TTSectionTemplate *)section
 didReplaceCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
-    [self reloadRowsAtIndexPaths:[self _indexPathsFromSection:section indexes:indexes]
-                withRowAnimation:UITableViewRowAnimationNone];
+    NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
+    if (indexPaths.count > 0) {
+        [self reloadRowsAtIndexPaths:indexPaths
+                    withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
-- (NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTSectionTemplate *)section
+- (nullable NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTSectionTemplate *)section
                                            indexes:(NSIndexSet *)indexes {
     __block NSInteger s = [self.templateArray indexOfObject:section];
+    if (s == NSNotFound) {
+        return nil;
+    }
     NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:indexes.count];
     [indexes enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
         [indexPaths addObject:[NSIndexPath indexPathForRow:idx inSection:s]];

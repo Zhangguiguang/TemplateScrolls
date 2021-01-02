@@ -50,6 +50,13 @@
                 
             case NSKeyValueChangeReplacement:
             {
+                NSArray *old = change[NSKeyValueChangeOldKey];
+                if (old.count > 0) {
+                    if ([_observer respondsToSelector:@selector(mutableArray:beReplacedObjects:atIndexes:)]) {
+                        [_observer mutableArray:_kvoArray beReplacedObjects:old atIndexes:indexes];
+                    }
+                }
+
                 NSArray *new = change[NSKeyValueChangeNewKey];
                 if (new.count > 0) {
                     if ([_observer respondsToSelector:@selector(mutableArray:didReplaceObjects:atIndexes:)]) {

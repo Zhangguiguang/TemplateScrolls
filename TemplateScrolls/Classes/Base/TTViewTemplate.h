@@ -48,6 +48,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, __nullable id data);
 
+/**
+ 如果要修改数据，并刷新视图，可以使用这个方法，将所有的修改放入到 block 中
+ */
+- (void)updateView:(void (^)(TTCellTemplate *tt))block;
+
 @end
 
 /**
@@ -60,6 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) void (^willDisplay)(NSInteger section, __nullable id data, __kindof UIView *me);
 
+// 不支持
+//- (void)updateView:(void (^)(TTReusableViewTemplate *tt))block;
 
 @end
 

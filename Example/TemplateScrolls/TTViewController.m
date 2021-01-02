@@ -79,12 +79,12 @@ UIColor *randomColor() {
     section.header.height = 100;
     section.header.willDisplay = ^(NSInteger section, id  _Nullable data, __kindof UITableViewHeaderFooterView *me) {
         me.textLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightSemibold];
-        me.textLabel.text = @"Im Header, 可以简单的用用系统自带的 Header -- 2020/01/02";
+        me.textLabel.text = @"Header 0, 可以简单的用用系统自带的 Header -- 2020/01/02";
         me.contentView.backgroundColor = randomColor();
     };
     section.footer.height = 160;
     section.footer.viewClass = [TTMessageFooter class];
-    section.footer.data = @"也可以自定义HeaderFooter, 用法跟 Cell 没什么区别。\n但目前有一个问题，header footer 似乎不能使用约束自适应高度，必须要自己设置高度";
+    section.footer.data = @"Footer 0 可以自定义HeaderFooter, 用法跟 Cell 没什么区别。\n但目前有一个问题，header footer 似乎不能使用约束自适应高度，必须要自己设置高度";
     
     {
         TTMessageModel *model = [TTMessageModel new];
@@ -150,7 +150,7 @@ UIColor *randomColor() {
         tt_weakify(self);
         cell.didSelect = ^(NSIndexPath *indexPath, id data) {
             tt_strongify(self);
-            [self _updateCellAtIndexPath:indexPath withData:data];
+            [self _updateCellAtIndexPath:indexPath];
         };
         [section.cellArray addObject:cell];
     }
@@ -190,13 +190,14 @@ UIColor *randomColor() {
     [self.tableView deleteCells:@[indexPath] deleteSection:NO];
 }
 
-- (void)_updateCellAtIndexPath:(NSIndexPath *)indexPath withData:(TTMessageModel *)data {
+- (void)_updateCellAtIndexPath:(NSIndexPath *)indexPath {
     static NSInteger index = 0;
     index ++;
     
-    data.msg = [NSString stringWithFormat:@"%@ 第 %ld 次改变数据", data.msg, index];
-    
-    [self.tableView reloadCells:@[indexPath]];
+    [[self.tableView cellTemplateAtIndexPath:indexPath] updateView:^(TTCellTemplate *tt) {
+        TTMessageModel *data = tt.data;
+        data.msg = [NSString stringWithFormat:@"%@ 第 %ld 次改变数据", data.msg, index];
+    }];
 }
 
 #pragma mark - Lazy Load

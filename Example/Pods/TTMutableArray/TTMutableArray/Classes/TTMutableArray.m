@@ -83,6 +83,7 @@
 }
 
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject {
+    [self _notifyObserverBeReplacedObjectsAtIndexes:[NSIndexSet indexSetWithIndex:index]];
     [_instance replaceObjectAtIndex:index withObject:anObject];
     [self _notifyObserverReplaceArray:@[anObject] indexes:[NSIndexSet indexSetWithIndex:index]];
 }
@@ -130,6 +131,7 @@
 
 - (void)replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray *)objects {
     if (indexes.count == 0) return;
+    [self _notifyObserverBeReplacedObjectsAtIndexes:indexes];
     [_instance replaceObjectsAtIndexes:indexes withObjects:objects];
     [self _notifyObserverReplaceArray:objects indexes:indexes];
 }
@@ -161,6 +163,13 @@
 - (void)_notifyObserverReplaceArray:(NSArray *)array indexes:(NSIndexSet *)indexes {
     if ([_observer respondsToSelector:@selector(mutableArray:didReplaceObjects:atIndexes:)]) {
         [_observer mutableArray:self didReplaceObjects:array atIndexes:indexes];
+    }
+}
+
+- (void)_notifyObserverBeReplacedObjectsAtIndexes:(NSIndexSet *)indexes {
+    if ([_observer respondsToSelector:@selector(mutableArray:beReplacedObjects:atIndexes:)]) {
+        NSArray* objects = [self objectsAtIndexes:indexes];
+        [_observer mutableArray:self beReplacedObjects:objects atIndexes:indexes];
     }
 }
 

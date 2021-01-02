@@ -1193,38 +1193,6 @@
 			};
 			name = Release;
 		};
-		8030779715B8F198C8151ADA6AD88E1E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 241314B1FF9C4EB306556AAC1E80E3A3 /* TemplateScrolls.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/TemplateScrolls/TemplateScrolls-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls.modulemap";
-				PRODUCT_MODULE_NAME = TemplateScrolls;
-				PRODUCT_NAME = TemplateScrolls;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 4.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		8C65F7CC9708EE0690525E4800598E8E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D6F28FE440D59CEDC07890B7050E26E8 /* Masonry.xcconfig */;
@@ -1380,6 +1348,37 @@
 			};
 			name = Debug;
 		};
+		B19EA77D3338BE722D195A4ECBBE8658 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 241314B1FF9C4EB306556AAC1E80E3A3 /* TemplateScrolls.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/TemplateScrolls/TemplateScrolls-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls.modulemap";
+				PRODUCT_MODULE_NAME = TemplateScrolls;
+				PRODUCT_NAME = TemplateScrolls;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
 		C0211A956E6C8FA1B6026C35381D26C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A0CDB016FAC391CA589B8F7AC963E2C7 /* Pods-TemplateScrolls_Example.debug.xcconfig */;
@@ -1413,11 +1412,10 @@
 			};
 			name = Debug;
 		};
-		C859D30B5F13C32FB5A4CD3F961A3EF7 /* Release */ = {
+		D2E019EC4FFD887F67CCC0F3446F7DE4 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 241314B1FF9C4EB306556AAC1E80E3A3 /* TemplateScrolls.xcconfig */;
 			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -1430,7 +1428,7 @@
 				GCC_PREFIX_HEADER = "Target Support Files/TemplateScrolls/TemplateScrolls-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "Target Support Files/TemplateScrolls/TemplateScrolls.modulemap";
 				PRODUCT_MODULE_NAME = TemplateScrolls;
@@ -1502,8 +1500,8 @@
 		47B6D781B30A827DAAB873009E0C95CE /* Build configuration list for PBXNativeTarget "TemplateScrolls" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8030779715B8F198C8151ADA6AD88E1E /* Debug */,
-				C859D30B5F13C32FB5A4CD3F961A3EF7 /* Release */,
+				B19EA77D3338BE722D195A4ECBBE8658 /* Debug */,
+				D2E019EC4FFD887F67CCC0F3446F7DE4 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
