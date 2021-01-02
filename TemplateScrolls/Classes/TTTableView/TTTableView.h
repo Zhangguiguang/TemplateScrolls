@@ -26,11 +26,6 @@ typedef NSMutableArray<TTTableSectionTemplate *> TTTableTemplateArray;
 // 这两个代理的部分代理方法，是无效的，被内部强制实现了
 @property (nonatomic, weak, nullable) id <UITableViewDataSource> additionalDataSource;
 @property (nonatomic, weak, nullable) id <UITableViewDelegate> additionalDelegate;
-// 系统的 delegate 和 dataSouce 都是不可用的
-- (void)setDelegate:(nullable id<UITableViewDelegate>)delegate NS_UNAVAILABLE;
-- (id<UITableViewDelegate>)delegate NS_UNAVAILABLE;
-- (void)setDataSource:(nullable id<UITableViewDataSource>)dataSource NS_UNAVAILABLE;
-- (id<UITableViewDataSource>)dataSource NS_UNAVAILABLE;
 
 /**
  Cell 出现时的回调，它的优先级比 template.willDisplay 低
@@ -43,6 +38,31 @@ typedef NSMutableArray<TTTableSectionTemplate *> TTTableTemplateArray;
  template.didSelect > self.didSelect > delegate.didSelect
  */
 @property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, id data);
+
+
+@end
+
+
+@interface TTTableView (TTUnavailable)
+
+// 自带的 insert、delete 不可用,
+// 直接对 templateArray 及 cellArray 进行操作即可
+// reload 方法没有数组操作，不影响使用
+- (void)insertSections:(NSIndexSet *)sections
+      withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+- (void)deleteSections:(NSIndexSet *)sections
+      withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+- (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+              withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+- (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+              withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+
+// 系统的 delegate 和 dataSouce 都是不可用的
+// 如果有需要，使用 additionalDataSource 和 additionalDelegate
+- (void)setDelegate:(nullable id<UITableViewDelegate>)delegate NS_UNAVAILABLE;
+- (id<UITableViewDelegate>)delegate NS_UNAVAILABLE;
+- (void)setDataSource:(nullable id<UITableViewDataSource>)dataSource NS_UNAVAILABLE;
+- (id<UITableViewDataSource>)dataSource NS_UNAVAILABLE;
 
 @end
 

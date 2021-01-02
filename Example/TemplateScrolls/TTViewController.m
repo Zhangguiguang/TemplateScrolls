@@ -66,6 +66,8 @@ UIColor *randomColor() {
         [section.cellArray addObject:cell];
     }];
     
+    section.header.height = 50;
+    
     [self.tableView.templateArray addObject:section];
     self.tableView.willDisplay = ^(NSIndexPath *i, id data, UITableViewCell *me) {
         me.backgroundColor = randomColor();
@@ -86,22 +88,115 @@ UIColor *randomColor() {
     
     {
         TTMessageModel *model = [TTMessageModel new];
-        model.title = [NSString stringWithFormat:@"0 - 实现了Header Footer"];
+        model.title = @"0 - 实现了Header Footer";
         model.msg = @"跟我在同一组";
         model.time = @"2020/01/02";
         
         TTTableCellTemplate *cell = [TTCellTemplate new];
         cell.viewClass = [TTMessageCell class];
         cell.data = model;
-        cell.height = model.height;
         [section.cellArray addObject:cell];
     }
-    
+    {
+        TTMessageModel *model = [TTMessageModel new];
+        model.title = @"1 - 动态添加 Cell";
+        model.msg = @"点击这行，可以在它下面动态的添加一行 Cell";
+        model.time = @"2020/01/02";
+        
+        TTTableCellTemplate *cell = [TTCellTemplate new];
+        cell.viewClass = [TTMessageCell class];
+        cell.data = model;
+        tt_weakify(self);
+        cell.didSelect = ^(NSIndexPath *indexPath, id data) {
+            tt_strongify(self);
+            [self _appendCellAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+2 inSection:indexPath.section]];
+        };
+        [section.cellArray addObject:cell];
+    }
+    {
+        TTTableCellTemplate *space1 = [TTCellTemplate new];
+        space1.height = 10;
+        TTTableCellTemplate *space2 = [TTCellTemplate new];
+        space2.height = 10;
+        
+        [section.cellArray addObject:space1];
+        [section.cellArray addObject:space2];
+    }
+    {
+        TTMessageModel *model = [TTMessageModel new];
+        model.title = @"2 - 动态删除 Cell";
+        model.msg = @"点击这行，可以删除在它上面的一行 Cell";
+        model.time = @"2020/01/02";
+        
+        TTTableCellTemplate *cell = [TTCellTemplate new];
+        cell.viewClass = [TTMessageCell class];
+        cell.data = model;
+        tt_weakify(self);
+        cell.didSelect = ^(NSIndexPath *indexPath, id data) {
+            tt_strongify(self);
+            [self _removeCellAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row-2 inSection:indexPath.section]];
+        };
+        [section.cellArray addObject:cell];
+    }
+    {
+        TTMessageModel *model = [TTMessageModel new];
+        model.title = @"3 - 动态更新 Cell";
+        model.msg = @"点击这行，可以更改这行的数据";
+        model.time = @"2020/01/02";
+        
+        TTTableCellTemplate *cell = [TTCellTemplate new];
+        cell.viewClass = [TTMessageCell class];
+        cell.data = model;
+        tt_weakify(self);
+        cell.didSelect = ^(NSIndexPath *indexPath, id data) {
+            tt_strongify(self);
+            [self _updateCellAtIndexPath:indexPath withData:data];
+        };
+        [section.cellArray addObject:cell];
+    }
     
     [self.tableView.templateArray addObject:section];
     self.tableView.willDisplay = ^(NSIndexPath *i, id data, UITableViewCell *me) {
         me.backgroundColor = randomColor();
     };
+    self.tableView.didSelect = ^(NSIndexPath * _Nonnull indexPath, TTMessageModel *data) {
+        NSLog(@"... 普通的点击，如果 Cell 没有特别的事件，就会被全局事件响应 %@ %@", data.title, indexPath);
+    };
+}
+
+- (void)_appendCellAtIndexPath:(NSIndexPath *)indexPath {
+    static NSInteger index = 0;
+    index ++;
+    
+    TTMessageModel *model = [TTMessageModel new];
+    model.title = @"- - 我是动态添加的 Cell";
+    model.msg = [NSString stringWithFormat:@"第 %ld 个新增的 Cell", index];
+    NSDateFormatter *formater = [NSDateFormatter new];
+    formater.dateFormat = @"yyyy/MM/dd";
+    model.time = [formater stringFromDate:[NSDate date]];
+    
+    TTTableCellTemplate *cell = [TTCellTemplate new];
+    cell.viewClass = [TTMessageCell class];
+    cell.data = model;
+    [self.tableView.templateArray[indexPath.section].cellArray insertObject:cell atIndex:indexPath.row];
+}
+
+- (void)_removeCellAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row <= 2) {
+        NSLog(@"⚠️ 没有 Cell 可以被删除了！");
+        return;
+    }
+    [self.tableView.templateArray[indexPath.section].cellArray removeObjectAtIndex:indexPath.row];
+}
+
+- (void)_updateCellAtIndexPath:(NSIndexPath *)indexPath withData:(TTMessageModel *)data {
+    static NSInteger index = 0;
+    index ++;
+    
+    data.msg = [NSString stringWithFormat:@"%@ 第 %ld 次改变数据", data.msg, index];
+    
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath]
+                          withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark - Lazy Load

@@ -75,4 +75,13 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@protocol _TTSectionObserver <NSObject>
+
+- (void)section:(TTSectionTemplate *)section didInsertCells:(NSArray<TTCellTemplate *> *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)section:(TTSectionTemplate *)section didRemoveCells:(NSArray<TTCellTemplate *> *)objects atIndexes:(NSIndexSet *)indexes;
+- (void)section:(TTSectionTemplate *)section didReplaceCells:(NSArray<TTCellTemplate *> *)objects atIndexes:(NSIndexSet *)indexes;
+
+@end
+
+
 NS_ASSUME_NONNULL_END

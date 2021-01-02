@@ -31,6 +31,11 @@
     return _##Name; \
 }
 
+#define tt_weakify(object)  __weak __typeof__(object) weak_##object = object;
+
+#define tt_strongify(object)  __typeof__(object) object = weak_##object;
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
