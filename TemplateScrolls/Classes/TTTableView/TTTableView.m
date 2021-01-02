@@ -57,17 +57,16 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [self _tableView:tableView
-    viewForReusableTemplate:self.templateArray[section].header];
-}
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    return [self _tableView:tableView
-    viewForReusableTemplate:self.templateArray[section].footer];
-}
-- (UIView *)_tableView:(UITableView *)tableView
-viewForReusableTemplate:(TTReusableViewTemplate *)template {
+    TTReusableViewTemplate *template = self.templateArray[section].header;
     Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
     TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider reuseIdentifier]];
+    reuseView.data = template.data;
+    return reuseView;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
+    TTReusableViewTemplate *template = self.templateArray[section].footer;
+    Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
+    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider reuseIdentifier2]];
     reuseView.data = template.data;
     return reuseView;
 }
@@ -90,15 +89,16 @@ viewForReusableTemplate:(TTReusableViewTemplate *)template {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.templateArray[section].header;
-    return [self _tableView:tableView heightForReusableTemplate:template];
+    return [self _tableView:tableView heightForReusableTemplate:template isHeader:YES];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.templateArray[section].footer;
-    return [self _tableView:tableView heightForReusableTemplate:template];
+    return [self _tableView:tableView heightForReusableTemplate:template isHeader:NO];
 }
 - (CGFloat)_tableView:(UITableView *)tableView
-heightForReusableTemplate:(TTReusableViewTemplate *)template {
+heightForReusableTemplate:(TTReusableViewTemplate *)template
+             isHeader:(BOOL)isHeader {
     // 固定的高度
     if (template.height > 0) {
         return template.height;
@@ -113,7 +113,8 @@ heightForReusableTemplate:(TTReusableViewTemplate *)template {
     
     // 动态高度
     Class<TTTableReusableViewProvider> provider = template.viewClass ? : TTTableReusableView.class;
-    return [tableView fd_heightForHeaderFooterViewWithIdentifier:[provider reuseIdentifier] configuration:^(TTTableReusableView *headerFooterView) {
+    NSString *identifier = isHeader ? [provider reuseIdentifier] : [provider reuseIdentifier2];
+    return [tableView fd_heightForHeaderFooterViewWithIdentifier:identifier configuration:^(TTTableReusableView *headerFooterView) {
         headerFooterView.data = template.data;
     }];
 }
@@ -251,8 +252,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)_registerViewWithSections:(NSArray<TTTableSectionTemplate *> *)sections {
     [sections enumerateObjectsUsingBlock:^(TTTableSectionTemplate *section, NSUInteger idx, BOOL *stop) {
-        [self _registerReusableView:section.header];
-        [self _registerReusableView:section.footer];
+        [self _registerReusableView:section.header isHeader:YES];
+        [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
     }];
 }
@@ -264,9 +265,13 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }];
 }
 
-- (void)_registerReusableView:(TTTableReusableViewTemplate *)template {
+- (void)_registerReusableView:(TTTableReusableViewTemplate *)template isHeader:(BOOL)isHeader {
     Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider reuseIdentifier]];
+    if (isHeader) {
+        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider reuseIdentifier]];
+    } else {
+        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider reuseIdentifier2]];
+    }
 }
 
 @end

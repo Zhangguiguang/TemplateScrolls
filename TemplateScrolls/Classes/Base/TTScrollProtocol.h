@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @required
 /**
- 要提供的 Cell 的重用标识
+ 要重用的视图 (Cell, Header, Footer) 的重用标识
  */
 @property (nonatomic, readonly, class) NSString *reuseIdentifier;
 
@@ -90,12 +90,21 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 @protocol TTTableReusableViewProvider <TTTemplateViewProvider>
+/**
+ 理论上 Header、Footer 可以用同一个类来实现，那么需要提供两个重用符
+ */
+@property (nonatomic, readonly, class) NSString *reuseIdentifier2;
+
 @end
 
 @protocol TTCollectionCellProvider <TTTemplateViewProvider>
 @end
 
 @protocol TTCollectionReusableViewProvider <TTTemplateViewProvider>
+/**
+ 理论上 Header、Footer 可以用同一个类来实现，那么需要提供两个重用符
+ */
+@property (nonatomic, readonly, class) NSString *reuseIdentifier2;
 @end
 
 NS_ASSUME_NONNULL_END

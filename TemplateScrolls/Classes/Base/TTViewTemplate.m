@@ -26,9 +26,16 @@
 
 - (id)header {
     if (!_header) {
-        // TODO: header
+        _header = [TTReusableViewTemplate new];
     }
     return _header;
+}
+
+- (id)footer {
+    if (!_footer) {
+        _footer = [TTReusableViewTemplate new];
+    }
+    return _footer;
 }
 
 @synthesize cellArray = _cellArray;

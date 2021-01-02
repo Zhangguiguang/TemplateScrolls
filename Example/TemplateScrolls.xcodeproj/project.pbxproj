@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		34052238259F292A000DE2D4 /* TTMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34052237259F292A000DE2D4 /* TTMessageCell.m */; };
 		34052276259F8426000DE2D4 /* log.json in Resources */ = {isa = PBXBuildFile; fileRef = 34052275259F8426000DE2D4 /* log.json */; };
+		340F5D2225A06A3C0077E672 /* TTMessageFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 340F5D2125A06A3C0077E672 /* TTMessageFooter.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -44,6 +45,8 @@
 		34052236259F292A000DE2D4 /* TTMessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTMessageCell.h; sourceTree = "<group>"; };
 		34052237259F292A000DE2D4 /* TTMessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTMessageCell.m; sourceTree = "<group>"; };
 		34052275259F8426000DE2D4 /* log.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = log.json; sourceTree = "<group>"; };
+		340F5D2025A06A3C0077E672 /* TTMessageFooter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTMessageFooter.h; sourceTree = "<group>"; };
+		340F5D2125A06A3C0077E672 /* TTMessageFooter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTMessageFooter.m; sourceTree = "<group>"; };
 		4A809BF2DE7F20AE74ECA2E1 /* Pods-TemplateScrolls_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Tests.release.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Tests/Pods-TemplateScrolls_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		52277BC14063DD5D7094691F /* Pods_TemplateScrolls_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TemplateScrolls_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		596247D3DEAE1A5BE6B97D37 /* Pods-TemplateScrolls_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TemplateScrolls_Example.debug.xcconfig"; path = "Target Support Files/Pods-TemplateScrolls_Example/Pods-TemplateScrolls_Example.debug.xcconfig"; sourceTree = "<group>"; };
@@ -105,6 +108,8 @@
 			children = (
 				34052236259F292A000DE2D4 /* TTMessageCell.h */,
 				34052237259F292A000DE2D4 /* TTMessageCell.m */,
+				340F5D2025A06A3C0077E672 /* TTMessageFooter.h */,
+				340F5D2125A06A3C0077E672 /* TTMessageFooter.m */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -396,6 +401,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6003F59E195388D20070C39A /* TTAppDelegate.m in Sources */,
+				340F5D2225A06A3C0077E672 /* TTMessageFooter.m in Sources */,
 				6003F5A7195388D20070C39A /* TTViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				34052238259F292A000DE2D4 /* TTMessageCell.m in Sources */,

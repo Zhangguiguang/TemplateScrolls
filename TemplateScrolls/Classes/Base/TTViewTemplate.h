@@ -41,12 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  可配置该 Cell 将出现时的事件
  */
-@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, id data, __kindof UICellType me);
+@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, __nullable id data, __kindof UICellType me);
 
 /**
  可配置该 Cell 被点击时的事件
  */
-@property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, id data);
+@property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, __nullable id data);
 
 @end
 
@@ -58,7 +58,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  可配置该 View 将出现时的事件
  */
-@property (nonatomic, copy) void (^willDisplay)(NSInteger section, id data, __kindof UIViewType me);
+@property (nonatomic, copy) void (^willDisplay)(NSInteger section, __nullable id data, __kindof UIView *me);
 
 
 @end

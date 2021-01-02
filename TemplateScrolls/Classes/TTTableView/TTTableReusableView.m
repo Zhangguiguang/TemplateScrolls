@@ -50,12 +50,21 @@
     [self refreshView:data];
 }
 
-#pragma mark - TTTableViewCellProvider
+#pragma mark - TTTableReusableViewProvider
 
 + (NSString *)reuseIdentifier {
     NSString *identifier = objc_getAssociatedObject(self, _cmd);
     if (identifier.length == 0) {
-        identifier = [NSString stringWithFormat:@"TT-%@Identifier", NSStringFromClass(self)];
+        identifier = [NSString stringWithFormat:@"TT-%@Header", NSStringFromClass(self)];
+        objc_setAssociatedObject(self, _cmd, identifier, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    }
+    return identifier;
+}
+
++ (NSString *)reuseIdentifier2 {
+    NSString *identifier = objc_getAssociatedObject(self, _cmd);
+    if (identifier.length == 0) {
+        identifier = [NSString stringWithFormat:@"TT-%@Footer", NSStringFromClass(self)];
         objc_setAssociatedObject(self, _cmd, identifier, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return identifier;

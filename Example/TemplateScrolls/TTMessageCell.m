@@ -58,6 +58,7 @@ TTLazyLoadNew(UILabel, titleLabel, {
 
 TTLazyLoadNew(UILabel, msgLabel, {
     z.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
+    z.textColor = [UIColor darkGrayColor];
     z.numberOfLines = 0;
 })
 
