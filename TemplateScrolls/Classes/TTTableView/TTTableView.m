@@ -49,7 +49,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self _templateAtIndexPath:indexPath];
+    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     Class<TTTableCellProvider> provider = template.viewClass ? : [TTTableViewCell class];
     
     TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider reuseIdentifier] forIndexPath:indexPath];
@@ -73,7 +73,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTTableCellTemplate *template = [self _templateAtIndexPath:indexPath];
+    TTTableCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     // 固定的高度
     if (template.height > 0) {
         return template.height;
@@ -122,7 +122,7 @@ heightForReusableTemplate:(TTReusableViewTemplate *)template
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self _templateAtIndexPath:indexPath];
+    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     if (template.willDisplay) {
         template.willDisplay(indexPath, template.data, cell);
         return;
@@ -172,7 +172,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             break;
         }
         
-        TTCellTemplate *template = [self _templateAtIndexPath:indexPath];
+        TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
         
         if (template.height > 0) {
             break;
@@ -196,7 +196,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self _templateAtIndexPath:indexPath];
+    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     if (template.didSelect) {
         template.didSelect(indexPath, template.data);
         return;
@@ -210,7 +210,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-#pragma mark - Template Property
+#pragma mark - TTTemplateArrayOperator
 
 - (TTTableTemplateArray *)templateArray {
     if (!_templateArray) {
@@ -221,13 +221,107 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return _templateArray;
 }
 
-- (TTCellTemplate *)_templateAtIndexPath:(NSIndexPath *)indexPath {
-    return self.templateArray[indexPath.section].cellArray[indexPath.row];
+- (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts {
+    [self.templateArray insertObjects:tts atIndexes:indexes];
+}
+- (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts {
+    [self.templateArray replaceObjectsAtIndexes:indexes withObjects:tts];
+}
+- (void)deleteSections:(NSIndexSet *)indexes {
+    [self.templateArray removeObjectsAtIndexes:indexes];
 }
 
-- (id)dataAtIndexPath:(NSIndexPath *)indexPath {
+- (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
+    [self.templateArray insertObject:tt atIndex:section];
+}
+- (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
+    [self.templateArray replaceObjectAtIndex:section withObject:tt];
+}
+- (void)deleteSection:(NSInteger)section {
+    [self.templateArray removeObjectAtIndex:section];
+}
+
+- (void)insertCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells {
+    [self beginUpdates];
+    [cells enumerateObjectsUsingBlock:^(TTCellTemplate *cell, NSUInteger idx, BOOL *stop) {
+        if (indexPaths.count <= idx) {
+            *stop = YES; return; // == break
+        }
+        NSIndexPath *ip = indexPaths[idx];
+        [self.templateArray[ip.section].cellArray insertObject:cell atIndex:ip.row];
+    }];
+    [self endUpdates];
+}
+
+- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells {
+    [self beginUpdates];
+    [cells enumerateObjectsUsingBlock:^(TTCellTemplate *cell, NSUInteger idx, BOOL *stop) {
+        if (indexPaths.count <= idx) {
+            *stop = YES; return; // == break
+        }
+        NSIndexPath *ip = indexPaths[idx];
+        [self.templateArray[ip.section].cellArray replaceObjectAtIndex:ip.row withObject:cell];
+    }];
+    [self endUpdates];
+}
+
+- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths {
+    [self reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)deleteCells:(NSArray<NSIndexPath *> *)indexPaths deleteSection:(BOOL)needDelete {
+    [self beginUpdates];
+    if (indexPaths.count == 1) {
+        NSIndexPath *ip = indexPaths.firstObject;
+        [self.templateArray[ip.section].cellArray removeObjectAtIndex:ip.row];
+        
+        if (needDelete && self.templateArray[ip.section].cellArray.count == 0) {
+            [self.templateArray removeObjectAtIndex:ip.section];
+        }
+        
+    } else {
+        NSMutableDictionary<NSNumber *, NSMutableIndexSet *> *section_indexes_pair = [NSMutableDictionary dictionary];
+        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+            NSMutableIndexSet *indexSet = section_indexes_pair[@(obj.section)];
+            if (!indexSet) {
+                indexSet = [NSMutableIndexSet indexSet];
+                section_indexes_pair[@(obj.section)] = indexSet;
+            }
+            [indexSet addIndex:obj.row];
+        }];
+        
+        NSMutableIndexSet *willDeleteSections = needDelete ? [NSMutableIndexSet indexSet] : nil;
+        [section_indexes_pair enumerateKeysAndObjectsUsingBlock:^(NSNumber *s, NSMutableIndexSet *indexes, BOOL *stop) {
+            NSInteger section = [s integerValue];
+            if (self.templateArray[section].cellArray.count <= indexes.count) {
+                // 这种情况本该奔溃的
+                [willDeleteSections addIndex:section];
+                [self.templateArray[section].cellArray removeAllObjects];
+            } else {
+                [self.templateArray[section].cellArray removeObjectsAtIndexes:indexes];
+            }
+        }];
+        
+        if (willDeleteSections.count > 0) {
+            [self.templateArray removeObjectsAtIndexes:willDeleteSections];
+        }
+    }
+    [self endUpdates];
+}
+
+- (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
+    return self.templateArray[section].header;
+}
+- (TTReusableViewTemplate *)footerAtSection:(NSInteger)section {
+    return self.templateArray[section].footer;
+}
+- (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath {
+    return self.templateArray[indexPath.section].cellArray[indexPath.row];
+}
+- (id)cellDataAtIndexPath:(NSIndexPath *)indexPath {
     return self.templateArray[indexPath.section].cellArray[indexPath.row].data;
 }
+
 
 #pragma mark - TTMutableArrayObserver
 

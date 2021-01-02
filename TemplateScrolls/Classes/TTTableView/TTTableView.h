@@ -16,7 +16,7 @@ typedef TTReusableViewTemplate<Class<TTTableReusableViewProvider>, UITableViewHe
 typedef TTSectionTemplate<TTTableCellTemplate *, TTTableReusableViewTemplate *> TTTableSectionTemplate;
 typedef NSMutableArray<TTTableSectionTemplate *> TTTableTemplateArray;
 
-@interface TTTableView : UITableView
+@interface TTTableView : UITableView <TTTemplateArrayOperator>
 
 /**
  只需要配置这个模板数组，tableView 就会自动渲染数据

@@ -178,7 +178,8 @@ UIColor *randomColor() {
     TTTableCellTemplate *cell = [TTCellTemplate new];
     cell.viewClass = [TTMessageCell class];
     cell.data = model;
-    [self.tableView.templateArray[indexPath.section].cellArray insertObject:cell atIndex:indexPath.row];
+    
+    [self.tableView insertCells:@[indexPath] withTemplates:@[cell]];
 }
 
 - (void)_removeCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -186,7 +187,7 @@ UIColor *randomColor() {
         NSLog(@"⚠️ 没有 Cell 可以被删除了！");
         return;
     }
-    [self.tableView.templateArray[indexPath.section].cellArray removeObjectAtIndex:indexPath.row];
+    [self.tableView deleteCells:@[indexPath] deleteSection:NO];
 }
 
 - (void)_updateCellAtIndexPath:(NSIndexPath *)indexPath withData:(TTMessageModel *)data {
@@ -195,8 +196,7 @@ UIColor *randomColor() {
     
     data.msg = [NSString stringWithFormat:@"%@ 第 %ld 次改变数据", data.msg, index];
     
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath]
-                          withRowAnimation:UITableViewRowAnimationNone];
+    [self.tableView reloadCells:@[indexPath]];
 }
 
 #pragma mark - Lazy Load

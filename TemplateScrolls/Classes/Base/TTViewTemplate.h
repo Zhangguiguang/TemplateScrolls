@@ -84,4 +84,41 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@protocol TTTemplateArrayOperator <NSObject>
+
+@required
+@property (nonatomic, readonly) NSMutableArray *templateArray;
+
+@optional
+
+- (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
+- (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
+- (void)deleteSections:(NSIndexSet *)indexes;
+
+- (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt;
+- (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt;
+- (void)deleteSection:(NSInteger)section;
+
+- (void)insertCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells;
+- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells;
+
+/**
+ 刷新 Cell, 但是并不需要修改数据
+ */
+- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths;
+
+/**
+ 删除指定位置的 Cell
+ @params needDelete 如果删除的 cell 所在 section 中所有元素被删光了，是否要将整个 section 移除
+ */
+- (void)deleteCells:(NSArray<NSIndexPath *> *)indexPaths deleteSection:(BOOL)needDelete;
+
+- (TTReusableViewTemplate *)headerAtSection:(NSInteger)section;
+- (TTReusableViewTemplate *)footerAtSection:(NSInteger)section;
+- (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath;
+- (id)cellDataAtIndexPath:(NSIndexPath *)indexPath;
+
+@end
+
+
 NS_ASSUME_NONNULL_END
