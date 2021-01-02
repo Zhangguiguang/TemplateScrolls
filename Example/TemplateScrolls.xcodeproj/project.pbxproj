@@ -114,13 +114,13 @@
 			name = View;
 			sourceTree = "<group>";
 		};
-		349D0243259631B800B94C6C /* WantSee */ = {
+		349D0243259631B800B94C6C /* DontWantSee */ = {
 			isa = PBXGroup;
 			children = (
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 			);
-			name = WantSee;
+			name = DontWantSee;
 			sourceTree = "<group>";
 		};
 		6003F581195388D10070C39A = {
@@ -167,7 +167,7 @@
 				6003F5A6195388D20070C39A /* TTViewController.m */,
 				34052275259F8426000DE2D4 /* log.json */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
-				349D0243259631B800B94C6C /* WantSee */,
+				349D0243259631B800B94C6C /* DontWantSee */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			name = "Example for TemplateScrolls";
