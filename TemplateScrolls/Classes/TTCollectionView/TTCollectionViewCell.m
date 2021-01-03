@@ -1,20 +1,20 @@
 //
-//  TTTableViewCell.m
+//  TTCollectionViewCell.m
 //  TemplateScrolls
 //
-//  Created by 张贵广 on 2021/01/01.
+//  Created by 张贵广 on 2021/01/03.
 //
 
-#import "TTTableViewCell.h"
+#import "TTCollectionViewCell.h"
 #import "TTPrivate.h"
 
-@implementation TTTableViewCell
+@implementation TTCollectionViewCell
 
 #pragma mark - init
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
-        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.backgroundColor = [UIColor clearColor];
         self.contentView.backgroundColor = [UIColor clearColor];
         
@@ -34,12 +34,12 @@
 
 #pragma mark - Getter
 
-- (UITableView *)tableView {
-    return (UITableView *)self.superview;
+- (UICollectionView *)collectionView {
+    return (UICollectionView *)self.superview;
 }
 
 - (NSIndexPath *)indexPath {
-    return [(UITableView *)self.superview indexPathForRowAtPoint:self.center];
+    return [(UICollectionView *)self.superview indexPathForItemAtPoint:self.center];
 }
 
 #pragma mark - TTTemplateViewProtocol

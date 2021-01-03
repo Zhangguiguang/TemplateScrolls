@@ -10,9 +10,13 @@
 #endif
 #endif
 
+#import "TTPrivate.h"
 #import "TTScrollProtocol.h"
 #import "TTViewTemplate.h"
+#import "TTCollectionReusableView.h"
 #import "TTCollectionView.h"
+#import "TTCollectionViewCell.h"
+#import "TTCollectionViewLayout.h"
 #import "TTTableReusableView.h"
 #import "TTTableView.h"
 #import "TTTableViewCell.h"

@@ -1,23 +1,22 @@
 //
-//  TTTableReusableView.m
+//  TTCollectionReusableView.m
 //  TemplateScrolls
 //
-//  Created by 张贵广 on 2021/01/01.
+//  Created by 张贵广 on 2021/01/03.
 //
 
-#import "TTTableReusableView.h"
+#import "TTCollectionReusableView.h"
 #import "TTPrivate.h"
 
-@implementation TTTableReusableView
+@implementation TTCollectionReusableView
 
 #pragma mark - init
 
-- (instancetype)initWithReuseIdentifier:(NSString *)reuseIdentifier {
-    self = [super initWithReuseIdentifier:reuseIdentifier];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundView = [UIView new];
-        self.contentView.backgroundColor = [UIColor clearColor];
-
+        self.backgroundColor = [UIColor clearColor];
+        
         [self makeSubview];
         [self makeConstraint];
         [self makeEvent];
@@ -34,8 +33,12 @@
 
 #pragma mark - Getter
 
-- (UITableView *)tableView {
-    return (UITableView *)self.superview;
+- (UICollectionView *)collectionView {
+    return (UICollectionView *)self.superview;
+}
+
+- (UIView *)contentView {
+    return self;
 }
 
 #pragma mark - TTTemplateViewProtocol
