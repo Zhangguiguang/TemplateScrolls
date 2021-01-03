@@ -79,6 +79,34 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) NSMutableArray<CellTemplate> *cellArray;
 
+/**
+ 可以设置该 Section 的元素单选\多选
+ Default NO
+ @discussion 与 [table|collection]View.allowsMultipleSelection 功能类似，
+ 不同的是，该属性只对该 section 有效，不影响其他 section
+ 
+ 但是 view.allowsMultipleSelection 会作为一个总开关的存在，它为 NO 时，
+ 所有 section.allowsMultipleSelection 都会失效，
+ 整个 [table|collection]View 都只能选择一个 item
+ */
+@property (nonatomic, assign) BOOL allowsMultipleSelection;
+
+/**
+ 强制选中（至少要选中一个）
+ */
+@property (nonatomic, assign) BOOL forceSelection;
+
+@end
+
+
+@interface TTCollectionSectionTemplate <CellTemplate, ResuableViewTemplate> : TTSectionTemplate <CellTemplate, ResuableViewTemplate>
+
+@property (nonatomic, assign) UIEdgeInsets insets;
+
+@property (nonatomic, assign) CGFloat horizontalSpacing;
+
+@property (nonatomic, assign) CGFloat veritcalSpacing;
+
 @end
 
 
@@ -124,6 +152,28 @@ NS_ASSUME_NONNULL_BEGIN
 - (TTReusableViewTemplate *)footerAtSection:(NSInteger)section;
 - (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath;
 - (id)cellDataAtIndexPath:(NSIndexPath *)indexPath;
+
+#pragma mark - Selection
+
+/**
+ 获取所有被选中的 Cell 的下标
+ */
+- (NSArray<NSIndexPath *> *)indexPathsForSelectedCells;
+
+/**
+ 获取指定 section 中被选中的 Cell 的下标
+ */
+- (NSArray<NSIndexPath *> *)indexPathsForSelectedCellsInSection:(NSInteger)section;
+
+/**
+ 获取所有被选中的 Cell 的数据
+ */
+- (NSArray *)datasForSelectedCells;
+
+/**
+ 获取指定 section 中被选中的 Cell 的数据
+ */
+- (NSArray *)datasForSelectedCellsInSection:(NSInteger)section;
 
 @end
 

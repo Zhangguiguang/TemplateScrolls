@@ -210,6 +210,46 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (tableView.allowsMultipleSelection == NO) {
+        // 如果不允许多选，直接按系统默认行为处理
+        return indexPath;
+    }
+    
+    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    if (template.allowsMultipleSelection) {
+        // 允许多选，也不需要其他处理
+        return indexPath;
+    }
+    
+    // section 不允许多选，需要把已选中的取消掉
+    NSArray *sectionSelected = [self indexPathsForSelectedCellsInSection:indexPath.section];
+    [sectionSelected enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+        [tableView deselectRowAtIndexPath:obj animated:NO];
+    }];
+    
+    // 选中当前行
+    return indexPath;
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
+    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    if (template.forceSelection == NO) {
+        // 不强制选中，可以取消
+        return indexPath;
+    }
+    
+    NSArray *sectionSelected = [self indexPathsForSelectedCellsInSection:indexPath.section];
+    if (sectionSelected.count <= 1) {
+        // 只有一条选中，不允许取消
+        [tableView selectRowAtIndexPath:indexPath animated:NO
+                         scrollPosition:UITableViewScrollPositionNone];
+        return nil;
+    }
+    
+    return indexPath;
+}
+
 #pragma mark - TTTemplateArrayOperator
 
 - (TTTableTemplateArray *)templateArray {
@@ -322,6 +362,32 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return self.templateArray[indexPath.section].cellArray[indexPath.row].data;
 }
 
+- (NSArray<NSIndexPath *> *)indexPathsForSelectedCells {
+    return [self indexPathsForSelectedRows];
+}
+
+- (NSArray<NSIndexPath *> *)indexPathsForSelectedCellsInSection:(NSInteger)section {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.section == %ld", section];
+    return [[self indexPathsForSelectedRows] filteredArrayUsingPredicate:predicate];
+}
+
+- (NSArray *)datasForSelectedCells {
+    NSArray *sectionSelected = [self indexPathsForSelectedRows];
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:sectionSelected.count];
+    [sectionSelected enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+        [datas addObject:[self cellDataAtIndexPath:obj]];
+    }];
+    return [datas copy];
+}
+
+- (NSArray *)datasForSelectedCellsInSection:(NSInteger)section {
+    NSArray *sectionSelected = [self indexPathsForSelectedCellsInSection:section];
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:sectionSelected.count];
+    [sectionSelected enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+        [datas addObject:[self cellDataAtIndexPath:obj]];
+    }];
+    return [datas copy];
+}
 
 #pragma mark - TTMutableArrayObserver
 

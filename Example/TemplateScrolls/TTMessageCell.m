@@ -50,6 +50,15 @@
     self.timeLabel.text = data.time;
 }
 
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    if (selected) {
+        self.backgroundColor = [UIColor redColor];
+    } else {
+        self.backgroundColor = [UIColor whiteColor];
+    }
+}
+
 #pragma mark - Getter
 
 TTLazyLoadNew(UILabel, titleLabel, {

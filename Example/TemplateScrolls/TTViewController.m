@@ -31,6 +31,7 @@ UIColor *randomColor() {
     [super viewDidLoad];
     
     [self makeTableView];
+    self.tableView.allowsMultipleSelection = YES;
     
     [self makeTemplateArray2];
     [self makeTemplateArray];
@@ -54,6 +55,8 @@ UIColor *randomColor() {
     NSArray<NSDictionary *> *dataArray = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     
     TTTableSectionTemplate *section = [TTSectionTemplate new];
+    section.allowsMultipleSelection = NO;
+    section.forceSelection = YES;
     [dataArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         TTMessageModel *model = [TTMessageModel new];
         [model setValuesForKeysWithDictionary:obj];
@@ -69,13 +72,11 @@ UIColor *randomColor() {
     section.header.height = 50;
     
     [self.tableView.templateArray addObject:section];
-    self.tableView.willDisplay = ^(NSIndexPath *i, id data, UITableViewCell *me) {
-        me.backgroundColor = randomColor();
-    };
 }
 
 - (void)makeTemplateArray2 {
     TTTableSectionTemplate *section = [TTSectionTemplate new];
+    section.allowsMultipleSelection = YES;
     section.header.height = 100;
     section.header.willDisplay = ^(NSInteger section, id  _Nullable data, __kindof UITableViewHeaderFooterView *me) {
         me.textLabel.font = [UIFont systemFontOfSize:22 weight:UIFontWeightSemibold];
@@ -156,9 +157,6 @@ UIColor *randomColor() {
     }
     
     [self.tableView.templateArray addObject:section];
-    self.tableView.willDisplay = ^(NSIndexPath *i, id data, UITableViewCell *me) {
-        me.backgroundColor = randomColor();
-    };
     self.tableView.didSelect = ^(NSIndexPath * _Nonnull indexPath, TTMessageModel *data) {
         NSLog(@"... 普通的点击，如果 Cell 没有特别的事件，就会被全局事件响应 %@ %@", data.title, indexPath);
     };

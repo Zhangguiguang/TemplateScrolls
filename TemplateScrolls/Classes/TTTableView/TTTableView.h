@@ -52,10 +52,15 @@ typedef NSMutableArray<TTTableSectionTemplate *> TTTableTemplateArray;
       withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
 - (void)deleteSections:(NSIndexSet *)sections
       withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+- (void)moveSection:(NSInteger)section
+          toSection:(NSInteger)newSection NS_UNAVAILABLE;
+
 - (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
               withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
 - (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
               withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
+- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath
+               toIndexPath:(NSIndexPath *)newIndexPath NS_UNAVAILABLE;
 
 // 系统的 delegate 和 dataSouce 都是不可用的
 // 如果有需要，使用 additionalDataSource 和 additionalDelegate
