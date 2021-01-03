@@ -7,7 +7,7 @@
 
 #import <Foundation/Foundation.h>
 
-FOUNDATION_EXTERN inline NSString *_DefaultReusableIdentifer(Class Type, SEL sel, NSString *name);
+FOUNDATION_EXTERN NSString *_DefaultReusableIdentifer(Class Type, SEL sel, NSString *name);
 
 
 

@@ -1,7 +1,7 @@
 PODS:
   - Masonry (1.1.0)
-  - TemplateScrolls (1.0.0):
-    - TTMutableArray
+  - TemplateScrolls (1.0.1):
+    - TTMutableArray (>= 1.0.1)
     - "UITableView+FDTemplateLayoutCell (= 1.6.0)"
   - TTMutableArray (1.0.1)
   - "UITableView+FDTemplateLayoutCell (1.6)"
@@ -22,7 +22,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  TemplateScrolls: 907948935b5efafbb57cbe7470726f06d6cc7b67
+  TemplateScrolls: a8a143c6542cfebeeaed5c633a8cf5fc88b675e1
   TTMutableArray: 887c54d463bf6abca1721b0e61371ef512d31916
   "UITableView+FDTemplateLayoutCell": 5c949b4a5059c404b442926c0e80f81d10a2d66f
 
