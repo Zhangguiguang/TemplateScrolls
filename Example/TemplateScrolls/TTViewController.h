@@ -6,8 +6,8 @@
 //  Copyright (c) 2020 GG. All rights reserved.
 //
 
-@import UIKit;
+#import "TTBaseTableViewController.h"
 
-@interface TTViewController : UIViewController
+@interface TTViewController : TTBaseTableViewController
 
 @end

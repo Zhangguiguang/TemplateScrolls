@@ -7,10 +7,7 @@
 //
 
 #import "TTMessageCell.h"
-
-@implementation TTMessageModel
-- (void)setValue:(id)value forUndefinedKey:(NSString *)key {}
-@end
+#import "TTMessageModel.h"
 
 @interface TTMessageCell ()
 @property (nonatomic, strong) UILabel *titleLabel;

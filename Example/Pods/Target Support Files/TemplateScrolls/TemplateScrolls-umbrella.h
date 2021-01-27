@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "TemplateScrolls.h"
 #import "TTPrivate.h"
 #import "TTScrollProtocol.h"
 #import "TTViewTemplate.h"

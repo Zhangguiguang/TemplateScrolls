@@ -72,10 +72,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@interface TTSectionTemplate <CellTemplate, ResuableViewTemplate> : NSObject
+@interface TTSectionTemplate <CellTemplate, ReusableViewTemplate> : NSObject
 
-@property (null_resettable, nonatomic, strong) ResuableViewTemplate header;
-@property (null_resettable, nonatomic, strong) ResuableViewTemplate footer;
+@property (null_resettable, nonatomic, strong) ReusableViewTemplate header;
+@property (null_resettable, nonatomic, strong) ReusableViewTemplate footer;
 
 @property (nonatomic, readonly) NSMutableArray<CellTemplate> *cellArray;
 
@@ -99,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface TTCollectionSectionTemplate <CellTemplate, ResuableViewTemplate> : TTSectionTemplate <CellTemplate, ResuableViewTemplate>
+@interface TTCollectionSectionTemplate <CellTemplate, ReusableViewTemplate> : TTSectionTemplate <CellTemplate, ReusableViewTemplate>
 
 @property (nonatomic, assign) UIEdgeInsets insets;
 
