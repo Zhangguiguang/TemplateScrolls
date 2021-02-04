@@ -19,14 +19,8 @@
             me.textLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightSemibold];
             me.textLabel.text = @"Demo For Table View";
         };
-        
-        [[self tableTemplates] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableViewCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClass = [TTTableViewCell class];
+        [section.cells addObjectsFromArray:[self tableTemplates]];
         
         [self.sections addObject:section];
     }
@@ -37,14 +31,8 @@
             me.textLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightSemibold];
             me.textLabel.text = @"Demo For Table View";
         };
-        
-        [[self collectionTemplates] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableViewCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClass = [TTTableViewCell class];
+        [section.cells addObjectsFromArray:[self collectionTemplates]];
         
         [self.sections addObject:section];
     }
