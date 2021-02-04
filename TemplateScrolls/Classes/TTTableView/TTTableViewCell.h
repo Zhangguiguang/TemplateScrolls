@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTTableViewCell : UITableViewCell <TTTableCellProvider>
+@interface TTTableViewCell : UITableViewCell <TTCellProvider>
 
 - (void)setData:(id _Nullable)data NS_REQUIRES_SUPER;
 

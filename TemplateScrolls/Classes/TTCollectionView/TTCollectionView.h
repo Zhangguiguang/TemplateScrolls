@@ -12,8 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef TTCellTemplate<Class<TTCollectionCellProvider>, UICollectionViewCell *> TTCollectionCellTemplate;
-typedef TTReusableViewTemplate<Class<TTCollectionReusableViewProvider>, UICollectionReusableView *> TTCollectionReusableViewTemplate;
+typedef TTCellTemplate<Class<TTCellProvider>, UICollectionViewCell *> TTCollectionCellTemplate;
+typedef TTReusableViewTemplate<Class<TTReusableViewProvider>, UICollectionReusableView *> TTCollectionReusableViewTemplate;
 typedef TTCollectionSectionTemplate<TTCollectionCellTemplate *, TTCollectionReusableViewTemplate *> TTCollectionSectionTemplate2;
 typedef NSMutableArray<TTCollectionSectionTemplate2 *> TTCollectionTemplateArray;
 

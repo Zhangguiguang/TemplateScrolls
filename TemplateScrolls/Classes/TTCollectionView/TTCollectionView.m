@@ -75,9 +75,9 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTTableCellProvider> provider = template.viewClass ? : [TTCollectionViewCell class];
+    Class<TTCellProvider> provider = template.viewClass ? : [TTCollectionViewCell class];
     
-    TTCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[provider reuseIdentifier] forIndexPath:indexPath];
+    TTCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
     return cell;
 }
@@ -89,12 +89,12 @@
     NSString *identifier = nil;
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
         template = self.templateArray[indexPath.section].header;
-        Class<TTCollectionReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
-        identifier = [provider reuseIdentifier];
+        Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
+        identifier = [provider headerIdentifier];
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
         template = self.templateArray[indexPath.section].footer;
-        Class<TTCollectionReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
-        identifier = [provider reuseIdentifier2];
+        Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
+        identifier = [provider footerIdentifier];
     }
     
     TTCollectionReusableView *reuseView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
@@ -449,19 +449,19 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {
     [cells enumerateObjectsUsingBlock:^(TTCellTemplate *obj, NSUInteger idx, BOOL *stop) {
-        Class<TTTableCellProvider> provider = obj.viewClass ? : [TTCollectionViewCell class];
-        [self registerClass:provider forCellWithReuseIdentifier:[provider reuseIdentifier]];
+        Class<TTCellProvider> provider = obj.viewClass ? : [TTCollectionViewCell class];
+        [self registerClass:provider forCellWithReuseIdentifier:[provider cellIdentifier]];
     }];
 }
 
 - (void)_registerReusableView:(TTCollectionReusableViewTemplate *)template isHeader:(BOOL)isHeader {
-    Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
+    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
     if (isHeader) {
         [self registerClass:provider forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-        withReuseIdentifier:[provider reuseIdentifier]];
+        withReuseIdentifier:[provider headerIdentifier]];
     } else {
         [self registerClass:provider forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-        withReuseIdentifier:[provider reuseIdentifier2]];
+        withReuseIdentifier:[provider footerIdentifier]];
     }
 }
 

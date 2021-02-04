@@ -50,24 +50,24 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTTableCellProvider> provider = template.viewClass ? : [TTTableViewCell class];
+    Class<TTCellProvider> provider = template.viewClass ? : [TTTableViewCell class];
     
-    TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider reuseIdentifier] forIndexPath:indexPath];
+    TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
     return cell;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.templateArray[section].header;
-    Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider reuseIdentifier]];
+    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
+    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider headerIdentifier]];
     reuseView.data = template.data;
     return reuseView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.templateArray[section].footer;
-    Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider reuseIdentifier2]];
+    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
+    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider footerIdentifier]];
     reuseView.data = template.data;
     return reuseView;
 }
@@ -113,8 +113,8 @@ heightForReusableTemplate:(TTReusableViewTemplate *)template
     }
     
     // 动态高度
-    Class<TTTableReusableViewProvider> provider = template.viewClass ? : TTTableReusableView.class;
-    NSString *identifier = isHeader ? [provider reuseIdentifier] : [provider reuseIdentifier2];
+    Class<TTReusableViewProvider> provider = template.viewClass ? : TTTableReusableView.class;
+    NSString *identifier = isHeader ? [provider headerIdentifier] : [provider footerIdentifier];
     return [tableView fd_heightForHeaderFooterViewWithIdentifier:identifier configuration:^(TTTableReusableView *headerFooterView) {
         headerFooterView.data = template.data;
     }];
@@ -430,17 +430,17 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)_registerCellWithCells:(NSArray<TTTableCellTemplate *> *)cells {
     [cells enumerateObjectsUsingBlock:^(TTTableCellTemplate *obj, NSUInteger idx, BOOL *stop) {
-        Class<TTTableCellProvider> provider = obj.viewClass ? : [TTTableViewCell class];
-        [self registerClass:provider forCellReuseIdentifier:[provider reuseIdentifier]];
+        Class<TTCellProvider> provider = obj.viewClass ? : [TTTableViewCell class];
+        [self registerClass:provider forCellReuseIdentifier:[provider cellIdentifier]];
     }];
 }
 
 - (void)_registerReusableView:(TTTableReusableViewTemplate *)template isHeader:(BOOL)isHeader {
-    Class<TTTableReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
+    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
     if (isHeader) {
-        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider reuseIdentifier]];
+        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider headerIdentifier]];
     } else {
-        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider reuseIdentifier2]];
+        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider footerIdentifier]];
     }
 }
 

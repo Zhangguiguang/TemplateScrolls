@@ -53,13 +53,13 @@
     [self refreshView:data];
 }
 
-#pragma mark - TTTableReusableViewProvider
+#pragma mark - TTReusableViewProvider
 
-+ (NSString *)reuseIdentifier {
++ (NSString *)headerIdentifier {
     return _DefaultReusableIdentifer(self, _cmd, @"Header");
 }
 
-+ (NSString *)reuseIdentifier2 {
++ (NSString *)footerIdentifier {
     return _DefaultReusableIdentifer(self, _cmd, @"Footer");
 }
 

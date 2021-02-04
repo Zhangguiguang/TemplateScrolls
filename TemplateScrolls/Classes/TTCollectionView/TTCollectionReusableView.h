@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTCollectionReusableView : UICollectionReusableView <TTCollectionReusableViewProvider>
+@interface TTCollectionReusableView : UICollectionReusableView <TTReusableViewProvider>
 
 - (void)setData:(id _Nullable)data NS_REQUIRES_SUPER;
 

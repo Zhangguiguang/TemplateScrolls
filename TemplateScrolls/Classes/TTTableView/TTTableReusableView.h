@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTTableReusableView : UITableViewHeaderFooterView <TTTableReusableViewProvider>
+@interface TTTableReusableView : UITableViewHeaderFooterView <TTReusableViewProvider>
 
 - (void)setData:(id _Nullable)data NS_REQUIRES_SUPER;
 

@@ -54,9 +54,9 @@
     [self refreshView:data];
 }
 
-#pragma mark - TTTableViewCellProvider
+#pragma mark - TTCellProvider
 
-+ (NSString *)reuseIdentifier {
++ (NSString *)cellIdentifier {
     return _DefaultReusableIdentifer(self, _cmd, @"Cell");
 }
 
