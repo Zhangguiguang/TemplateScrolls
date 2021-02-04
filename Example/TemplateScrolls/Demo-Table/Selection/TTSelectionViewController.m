@@ -45,13 +45,8 @@
         section.allowsMultipleSelection = YES;
         section.forceSelection = NO;
         
-        [@[@"A", @"B", @"C"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableCheckBoxCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClass = [TTTableCheckBoxCell class];
+        [section.cells addObjectsFromArray:@[@"A", @"B", @"C"]];
         
         [self.sections addObject:section];
     }
@@ -64,13 +59,8 @@
         section.allowsMultipleSelection = YES;
         section.forceSelection = YES;
         
-        [@[@"D", @"E", @"F"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableCheckBoxCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClassSet([TTTableCheckBoxCell class]);
+        [section.cells addObjectsFromArray:@[@"D", @"E", @"F"]];
         
         [self.sections addObject:section];
     }
@@ -82,13 +72,8 @@
         };
         section.allowsMultipleSelection = NO;
         
-        [@[@"X", @"Y", @"Z"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableRadioCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClassSet([TTTableRadioCell class]);
+        [section.cells addObjectsFromArray:@[@"X", @"Y", @"Z"]];
         
         [self.sections addObject:section];
     }
@@ -101,13 +86,8 @@
         section.allowsMultipleSelection = NO;
         section.forceSelection = YES;
         
-        [@[@"男", @"女", @"隐藏"] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            TTCellTemplate *cell = [TTCellTemplate new];
-            cell.viewClass = [TTTableRadioCell class];
-            cell.data = obj;
-            
-            [section.cells addObject:cell];
-        }];
+        section.viewClassSet([TTTableRadioCell class]);
+        [section.cells addObjectsFromArray:@[@"男", @"女", @"隐藏"]];
         
         [self.sections addObject:section];
     }

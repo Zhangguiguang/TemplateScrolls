@@ -24,7 +24,7 @@
 - (CGFloat)widthAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
     TTCellTemplate *cell = section.cells[indexPath.item];
-    if (cell.width > 0) {
+    if ([cell isKindOfClass:[TTCellTemplate class]] && cell.width > 0) {
         return cell.width;
     }
     return section.width;
@@ -33,7 +33,7 @@
 - (CGFloat)heightAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
     TTCellTemplate *cell = section.cells[indexPath.item];
-    if (cell.height > 0) {
+    if ([cell isKindOfClass:[TTCellTemplate class]] && cell.height > 0) {
         return cell.height;
     }
     return section.height;
