@@ -93,8 +93,9 @@ TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment
 @synthesize cells = _cells;
 - (NSMutableArray *)cells {
     if (!_cells) {
-        _cells = [TTMutableArray array];
-        ((TTMutableArray *)_cells).observer = self;
+        TTMutableArray *cells = [TTMutableArray array];
+        cells.observer = self;
+        _cells = cells;
     }
     return _cells;
 }
@@ -144,7 +145,11 @@ TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment
 
 - (void)_setDelegateForCells:(NSArray<TTCellTemplate *> *)cells
                     delegate:(nullable id<TTCellTemplateDelegate>)delegate {
-    [cells makeObjectsPerformSelector:@selector(setDelegate:) withObject:delegate];
+    [cells enumerateObjectsUsingBlock:^(TTCellTemplate * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if ([obj isKindOfClass:[TTCellTemplate class]]) {
+            obj.delegate = delegate;
+        }
+    }];
 }
 
 @end

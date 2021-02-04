@@ -16,26 +16,13 @@ typedef NSMutableArray<TTSectionTemplate *> TTTableTemplateArray;
 @interface TTTableView : UITableView <TTTemplateArrayOperator>
 
 /**
- 只需要配置这个模板数组，tableView 就会自动渲染数据
+ 只需要配置这个配置数组，tableView 就会自动渲染数据
  */
 @property (nonatomic, readonly) TTTableTemplateArray *sections;
 
 // 这两个代理的部分代理方法，是无效的，被内部强制实现了
 @property (nonatomic, weak, nullable) id <UITableViewDataSource> additionalDataSource;
 @property (nonatomic, weak, nullable) id <UITableViewDelegate> additionalDelegate;
-
-/**
- Cell 出现时的回调，它的优先级比 template.willDisplay 低
- template.willDisplay > section.willDisplay > self.willDisplay > delegate.willDisplay
- */
-@property (nonatomic, copy) TTCellWillDisplay willDisplay;
-
-/**
- Cell 被点击的事件，它的优先级比 template.didSelect 低
- template.didSelect > section.didSelect > self.didSelect > delegate.didSelect
- */
-@property (nonatomic, copy) TTCellDidSelect didSelect;
-
 
 @end
 

@@ -9,7 +9,7 @@
 #import "TTCollectionViewCell.h"
 #import "TTCollectionReusableView.h"
 #import <TTMutableArray/TTMutableArray.h>
-#import "NSArray+TTIndexPathValue.h"
+#import "UIScrollView+TTTemplateArrayCommon.h"
 
 @interface TTCollectionView () <TTMutableArrayObserver, _TTSectionObserver,
                     UICollectionViewDataSource, TTCollectionViewDelegateFlowLayout>
@@ -21,6 +21,9 @@
 @end
 
 @implementation TTCollectionView
+
+@synthesize willDisplay = _willDisplay;
+@synthesize didSelect   = _didSelect;
 
 #pragma mark - Delegate、DataSource
 @synthesize additionalDataSource = _outerDataSource;
@@ -75,40 +78,34 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = [self.sections tt_viewClassAtIndexPath:indexPath] ? : [TTCollectionViewCell class];
-    
-    TTCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
-    cell.data = template.data;
-    return cell;
+    Class<TTCellProvider> provider = [self viewClassAtIndexPath:indexPath] ? : [TTCollectionViewCell class];
+    id data = [self cellDataAtIndexPath:indexPath];
+    return [provider dequeueCellWithListView:collectionView forIndexPath:indexPath data:data];
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView
            viewForSupplementaryElementOfKind:(NSString *)kind
                                  atIndexPath:(NSIndexPath *)indexPath {
-    TTReusableViewTemplate *template = nil;
-    NSString *identifier = nil;
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        template = self.sections[indexPath.section].header;
+        TTReusableViewTemplate *template = self.sections[indexPath.section].header;
         Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
-        identifier = [provider headerIdentifier];
+        return [provider dequeueHeaderWithListView:collectionView forSection:indexPath.section data:template.data];
+        
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        template = self.sections[indexPath.section].footer;
+        TTReusableViewTemplate *template = self.sections[indexPath.section].footer;
         Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
-        identifier = [provider footerIdentifier];
+        return [provider dequeueFooterWithListView:collectionView forSection:indexPath.section data:template.data];
     }
     
-    TTCollectionReusableView *reuseView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
-    reuseView.data = template.data;
-    return reuseView;
+    return nil;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    CGFloat fixedWidth = [self.sections tt_widthAtIndexPath:indexPath];
-    CGFloat fixedHeight = [self.sections tt_heightAtIndexPath:indexPath];
+    CGFloat fixedWidth = [self widthAtIndexPath:indexPath];
+    CGFloat fixedHeight = [self heightAtIndexPath:indexPath];
     
     if (fixedWidth == TTViewAutomaticDimension || fixedHeight == TTViewAutomaticDimension) {
         // 继续往下
@@ -181,18 +178,10 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
 - (void)collectionView:(UICollectionView *)collectionView
        willDisplayCell:(UICollectionViewCell *)cell
     forItemAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    if (template.willDisplay) {
-        template.willDisplay(indexPath, template.data, cell);
-        return;
-    }
-    TTSectionTemplate *section = self.sections[indexPath.section];
-    if (section.willDisplay) {
-        section.willDisplay(indexPath, template.data, cell);
-        return;
-    }
-    if (self.willDisplay) {
-        self.willDisplay(indexPath, template.data, cell);
+    TTCellWillDisplay willDisplay = [self willDisplayAtIndexPath:indexPath];
+    if (willDisplay) {
+        id data = [self cellDataAtIndexPath:indexPath];
+        willDisplay(indexPath, data, cell);
         return;
     }
     if ([_outerDelegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
@@ -222,18 +211,10 @@ willDisplaySupplementaryView:(UICollectionReusableView *)view
 
 - (void)collectionView:(UICollectionView *)collectionView
 didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    if (template.didSelect) {
-        template.didSelect(indexPath, template.data);
-        return;
-    }
-    TTSectionTemplate *section = self.sections[indexPath.section];
-    if (section.didSelect) {
-        section.didSelect(indexPath, template.data);
-        return;
-    }
-    if (self.didSelect) {
-        self.didSelect(indexPath, template.data);
+    TTCellDidSelect didSelect = [self didSelectAtIndexPath:indexPath];
+    if (didSelect) {
+        id data = [self cellDataAtIndexPath:indexPath];
+        didSelect(indexPath, data);
         return;
     }
     if ([_outerDelegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
@@ -381,19 +362,6 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
             }
         }
     } completion:nil];
-}
-
-- (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
-    return self.sections[section].header;
-}
-- (TTReusableViewTemplate *)footerAtSection:(NSInteger)section {
-    return self.sections[section].footer;
-}
-- (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath {
-    return self.sections[indexPath.section].cells[indexPath.row];
-}
-- (id)cellDataAtIndexPath:(NSIndexPath *)indexPath {
-    return self.sections[indexPath.section].cells[indexPath.row].data;
 }
 
 - (NSArray<NSIndexPath *> *)indexPathsForSelectedCells {

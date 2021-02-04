@@ -93,6 +93,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, readonly, class) NSString *cellIdentifier;
 
+/**
+ 获取复用的 Cell
+ */
++ (instancetype)dequeueCellWithListView:(UIScrollView *)listView
+                           forIndexPath:(NSIndexPath *)indexPath
+                                   data:(nullable id)data;
+
 @end
 
 
@@ -111,6 +118,20 @@ NS_ASSUME_NONNULL_BEGIN
  Footer 的重用标识
  */
 @property (nonatomic, readonly, class) NSString *footerIdentifier;
+
+/**
+ 获取复用的 Header
+ */
++ (instancetype)dequeueHeaderWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(nullable id)data;
+
+/**
+ 获取复用的 Footer
+ */
++ (instancetype)dequeueFooterWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(nullable id)data;
 
 @end
 

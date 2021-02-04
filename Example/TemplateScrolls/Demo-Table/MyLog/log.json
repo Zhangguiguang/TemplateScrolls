@@ -1,7 +1,7 @@
 [
     {
         "title": "初步完成了TTTableView",
-        "msg": "它可以快速通过配置模板数组，自动渲染TableView，完全不需要实现任意的 delegate, dataSource 方法",
+        "msg": "它可以快速通过配置配置数组，自动渲染TableView，完全不需要实现任意的 delegate, dataSource 方法",
         "time": "2020/01/02"
     },
     {

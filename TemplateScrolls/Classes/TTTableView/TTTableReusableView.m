@@ -60,4 +60,30 @@
     return _DefaultReusableIdentifer(self, _cmd, @"Header");
 }
 
++ (instancetype)dequeueHeaderWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(id)data {
+    return [self _dequeueViewWithListView:listView identifier:[self headerIdentifier] data:data];
+}
+
++ (instancetype)dequeueFooterWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(id)data {
+    return [self _dequeueViewWithListView:listView identifier:[self footerIdentifier] data:data];
+}
+
++ (instancetype)_dequeueViewWithListView:(UIScrollView *)listView
+                              identifier:(NSString *)identifer
+                                    data:(id)data {
+    UITableView *tableView = (UITableView *)listView;
+    [tableView registerClass:self forHeaderFooterViewReuseIdentifier:identifer];
+    TTTableReusableView *view = [tableView dequeueReusableHeaderFooterViewWithIdentifier:identifer];
+    if (!view) {
+        view = [[TTTableReusableView alloc] initWithReuseIdentifier:identifer];
+    }
+    view.data = data;
+    return view;
+}
+
+
 @end

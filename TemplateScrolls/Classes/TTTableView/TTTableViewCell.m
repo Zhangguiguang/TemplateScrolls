@@ -60,4 +60,14 @@
     return _DefaultReusableIdentifer(self, _cmd, @"Cell");
 }
 
++ (instancetype)dequeueCellWithListView:(UIScrollView *)listView
+                           forIndexPath:(NSIndexPath *)indexPath
+                                   data:(id)data {
+    UITableView *tableView = (UITableView *)listView;
+    [tableView registerClass:self forCellReuseIdentifier:[self cellIdentifier]];
+    TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[self cellIdentifier] forIndexPath:indexPath];
+    cell.data = data;
+    return cell;
+}
+
 @end

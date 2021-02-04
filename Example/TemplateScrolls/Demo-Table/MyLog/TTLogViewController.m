@@ -18,19 +18,25 @@
     NSError *error = nil;
     NSArray<NSDictionary *> *dataArray = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     
-    TTSectionTemplate *section = [TTSectionTemplate new];
-    section.allowsMultipleSelection = NO;
-    section.forceSelection = NO;
+    TTSectionTemplate *section = TTSectionTemplate.make
+    .allowsMultipleSelectionSet(NO)
+    .forceSelectionSet(NO)
+    .viewClassSet([TTMessageCell class]);
+    
     [dataArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
         TTMessageModel *model = [TTMessageModel new];
         [model setValuesForKeysWithDictionary:obj];
         model.title = [NSString stringWithFormat:@"%lu - %@", idx, model.title];
         
-        TTCellTemplate *cell = [TTCellTemplate new];
-        cell.viewClass = [TTMessageCell class];
-        cell.data = model;
-        cell.height = model.height;
-        [section.cells addObject:cell];
+        // 因为 Section 中已经统一配置，因此你可以直接将 data 添加到 cells
+        [section.cells addObject:model];
+        
+        // 常规的 Cell 配置
+//        TTCellTemplate *cell = [TTCellTemplate new];
+//        cell.viewClass = [TTMessageCell class];
+//        cell.data = model;
+//        cell.height = model.height;
+//        [section.cells addObject:cell];
     }];
     [self.sections addObject:section];
 }

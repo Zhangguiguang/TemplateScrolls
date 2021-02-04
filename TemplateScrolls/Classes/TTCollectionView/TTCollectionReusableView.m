@@ -63,4 +63,24 @@
     return _DefaultReusableIdentifer(self, _cmd, @"Footer");
 }
 
++ (instancetype)dequeueHeaderWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(id)data {
+    UICollectionView *collectionView = (UICollectionView *)listView;
+    [collectionView registerClass:self forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[self headerIdentifier]];
+    TTCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:[self headerIdentifier] forIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+    view.data = data;
+    return view;
+}
+
++ (instancetype)dequeueFooterWithListView:(UIScrollView *)listView
+                               forSection:(NSInteger)section
+                                     data:(id)data {
+    UICollectionView *collectionView = (UICollectionView *)listView;
+    [collectionView registerClass:self forSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:[self footerIdentifier]];
+    TTCollectionReusableView *view = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:[self footerIdentifier] forIndexPath:[NSIndexPath indexPathForItem:0 inSection:section]];
+    view.data = data;
+    return view;
+}
+
 @end

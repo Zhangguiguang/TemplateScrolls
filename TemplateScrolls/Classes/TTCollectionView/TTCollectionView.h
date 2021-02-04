@@ -19,25 +19,13 @@ typedef NSMutableArray<TTSectionTemplate *> TTCollectionTemplateArray;
 @property (nonatomic, readonly) TTCollectionViewLayout *layout;
 
 /**
- 只需要配置这个模板数组，collectionView 就会自动渲染数据
+ 只需要配置这个配置数组，collectionView 就会自动渲染数据
  */
 @property (nonatomic, readonly) TTCollectionTemplateArray *sections;
 
 // 这两个代理的部分代理方法，是无效的，被内部强制实现了
 @property (nonatomic, weak, nullable) id <UICollectionViewDataSource> additionalDataSource;
 @property (nonatomic, weak, nullable) id <TTCollectionViewDelegateFlowLayout> additionalDelegate;
-
-/**
- Cell 出现时的回调，它的优先级比 template.willDisplay 低
- template.willDisplay > section.willDisplay > self.willDisplay > delegate.willDisplay
- */
-@property (nonatomic, copy) TTCellWillDisplay willDisplay;
-
-/**
- Cell 被点击的事件，它的优先级比 template.didSelect 低
- template.didSelect > section.didSelect > self.didSelect > delegate.didSelect
- */
-@property (nonatomic, copy) TTCellDidSelect didSelect;
 
 @end
 

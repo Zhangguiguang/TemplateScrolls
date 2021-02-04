@@ -10,7 +10,7 @@
 #import "TTTableReusableView.h"
 #import <TTMutableArray/TTMutableArray.h>
 #import <UITableView_FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
-#import "NSArray+TTIndexPathValue.h"
+#import "UIScrollView+TTTemplateArrayCommon.h"
 
 @interface TTTableView () <TTMutableArrayObserver, _TTSectionObserver,
                         UITableViewDelegate, UITableViewDataSource>
@@ -20,6 +20,9 @@
 @end
 
 @implementation TTTableView
+
+@synthesize willDisplay = _willDisplay;
+@synthesize didSelect   = _didSelect;
 
 #pragma mark - Delegate、DataSource
 @synthesize additionalDataSource = _outerDataSource;
@@ -50,31 +53,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = [self.sections tt_viewClassAtIndexPath:indexPath] ? : [TTTableViewCell class];
-    
-    TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
-    cell.data = template.data;
-    return cell;
+    Class<TTCellProvider> provider = [self viewClassAtIndexPath:indexPath] ? : [TTTableViewCell class];
+    id data = [self cellDataAtIndexPath:indexPath];
+    return [provider dequeueCellWithListView:tableView forIndexPath:indexPath data:data];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.sections[section].header;
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider headerIdentifier]];
-    reuseView.data = template.data;
-    return reuseView;
+    return [provider dequeueHeaderWithListView:tableView forSection:section data:template.data];
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     TTReusableViewTemplate *template = self.sections[section].footer;
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider footerIdentifier]];
-    reuseView.data = template.data;
-    return reuseView;
+    return [provider dequeueFooterWithListView:tableView forSection:section data:template.data];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat fixedHeight = [self.sections tt_heightAtIndexPath:indexPath];
+    CGFloat fixedHeight = [self heightAtIndexPath:indexPath];
     
     if (fixedHeight == TTViewAutomaticDimension) {
         // 继续向下执行
@@ -126,18 +123,10 @@ heightForReusableTemplate:(TTReusableViewTemplate *)template
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    if (template.willDisplay) {
-        template.willDisplay(indexPath, template.data, cell);
-        return;
-    }
-    TTSectionTemplate *section = self.sections[indexPath.section];
-    if (section.willDisplay) {
-        section.willDisplay(indexPath, template.data, cell);
-        return;
-    }
-    if (self.willDisplay) {
-        self.willDisplay(indexPath, template.data, cell);
+    TTCellWillDisplay willDisplay = [self willDisplayAtIndexPath:indexPath];
+    if (willDisplay) {
+        id data = [self cellDataAtIndexPath:indexPath];
+        willDisplay(indexPath, data, cell);
         return;
     }
     if ([_outerDelegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
@@ -205,18 +194,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    if (template.didSelect) {
-        template.didSelect(indexPath, template.data);
-        return;
-    }
-    TTSectionTemplate *section = self.sections[indexPath.section];
-    if (section.didSelect) {
-        section.didSelect(indexPath, template.data);
-        return;
-    }
-    if (self.didSelect) {
-        self.didSelect(indexPath, template.data);
+    TTCellDidSelect didSelect = [self didSelectAtIndexPath:indexPath];
+    if (didSelect) {
+        id data = [self cellDataAtIndexPath:indexPath];
+        didSelect(indexPath, data);
         return;
     }
     if ([_outerDelegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]) {
@@ -363,19 +344,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self endUpdates];
 }
 
-- (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
-    return self.sections[section].header;
-}
-- (TTReusableViewTemplate *)footerAtSection:(NSInteger)section {
-    return self.sections[section].footer;
-}
-- (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath {
-    return self.sections[indexPath.section].cells[indexPath.row];
-}
-- (id)cellDataAtIndexPath:(NSIndexPath *)indexPath {
-    return self.sections[indexPath.section].cells[indexPath.row].data;
-}
-
 - (NSArray<NSIndexPath *> *)indexPathsForSelectedCells {
     return [self indexPathsForSelectedRows];
 }
@@ -409,7 +377,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     didInsertObjects:(NSArray<TTSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
-    [self _registerViewWithSections:objects];
     [self insertSections:indexes withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -424,7 +391,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
    didReplaceObjects:(NSArray<TTSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
-    [self _registerViewWithSections:objects];
     [self reloadSections:indexes withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -432,32 +398,6 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
    beReplacedObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:nil];
-}
-
-- (void)_registerViewWithSections:(NSArray<TTSectionTemplate *> *)sections {
-    [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
-        [self _registerReusableView:section.header isHeader:YES];
-        [self _registerReusableView:section.footer isHeader:NO];
-        [self _registerCellWithCells:section.cells];
-    }];
-    // section 也和 cell 都有 viewClass 属性，同样要注册一下
-    [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
-}
-
-- (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {
-    [cells enumerateObjectsUsingBlock:^(TTCellTemplate *obj, NSUInteger idx, BOOL *stop) {
-        Class<TTCellProvider> provider = obj.viewClass ? : [TTTableViewCell class];
-        [self registerClass:provider forCellReuseIdentifier:[provider cellIdentifier]];
-    }];
-}
-
-- (void)_registerReusableView:(TTReusableViewTemplate *)template isHeader:(BOOL)isHeader {
-    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
-    if (isHeader) {
-        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider headerIdentifier]];
-    } else {
-        [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider footerIdentifier]];
-    }
 }
 
 - (void)_setObserverForSections:(NSArray<TTSectionTemplate *> *)sections

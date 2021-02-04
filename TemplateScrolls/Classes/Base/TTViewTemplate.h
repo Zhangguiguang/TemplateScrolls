@@ -60,6 +60,7 @@ TTChainPropertyStatement(TTCellTemplate, assign, CGFloat, height);
 
 /**
  如果要修改数据，并刷新视图，可以使用这个方法，将所有的修改放入到 block 中
+ @note 注意：只有真正的 TTCellTemplate 类型才可以使用该 block 进行刷新，如果你的 cell 配置是普通的 data，则只能自己手动刷新
  */
 - (void)updateView:(void (^)(TTCellTemplate *tt))block;
 
@@ -108,7 +109,12 @@ TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, height);
 @property (null_resettable, nonatomic, strong) TTReusableViewTemplate *header;
 @property (null_resettable, nonatomic, strong) TTReusableViewTemplate *footer;
 
-@property (nonatomic, readonly) NSMutableArray<TTCellTemplate *> *cells;
+/**
+ cell 的配置数组
+ @discussion 原则上该数组中的元素应该是 TTCellTemplate 类型，
+ 但是如果你在 section 中指定了统一的默认的配置，那么你就可以直接将 data 添加到这个数组中进行 Cell 的渲染
+ */
+@property (nonatomic, readonly) NSMutableArray *cells;
 
 /**
  可以设置该 Section 的元素单选\多选
@@ -152,6 +158,18 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
 @property (nonatomic, readonly) NSMutableArray<TTSectionTemplate *> *sections;
 
 @optional
+
+/**
+ Cell 出现时的回调，它的优先级比 template.willDisplay 低
+ template.willDisplay > section.willDisplay > view.willDisplay > delegate.willDisplay
+ */
+@property (nonatomic, copy) TTCellWillDisplay willDisplay;
+
+/**
+ Cell 被点击的事件，它的优先级比 template.didSelect 低
+ template.didSelect > section.didSelect > view.didSelect > delegate.didSelect
+ */
+@property (nonatomic, copy) TTCellDidSelect didSelect;
 
 - (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
 - (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
