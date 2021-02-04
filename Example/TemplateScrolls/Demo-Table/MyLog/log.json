@@ -2,73 +2,73 @@
     {
         "title": "初步完成了TTTableView",
         "msg": "它可以快速通过配置配置数组，自动渲染TableView，完全不需要实现任意的 delegate, dataSource 方法",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "关于高度",
         "msg": "它可以设置固定高度，也可以通过建立约束，来根据内容自适应高度。自适应高度时，它会自动存储缓存高度。",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "测试很高的高度",
         "msg": "测试一下：\n如果有很多内容\n只要 Cell 的内容在垂直方向上\n建立了完整的-\n合理的约束\n系统会自动用内容\n将 Cell 撑开.",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "固定的高度（120pt, 多余了）",
         "msg": "每一个 Cell 都很容易单独调整，你可以一部分固定高度，一部分自动高度。这行固定高度150",
-        "time": "2020/01/02",
+        "time": "2021/01/02",
         "height": 150
     },
     {
         "title": "固定的高度（100pt, 不足的）",
         "msg": "这一行有内容比较多，但是因为高度被固定了，文字就会被裁剪了..这一行有内容比较多，但是因为高度被固定了，文字就会被裁剪了..这一行有内容比较多，但是因为高度被固定了，文字就会被裁剪了..",
-        "time": "2020/01/02",
+        "time": "2021/01/02",
         "height": 100
     },
     {
         "title": "约束的建议",
         "msg": "尽量要建立比较灵活的约束，使用 lessThanOrEqualTo 或 greaterThanOrEqualTo 而不是 equalTo, 这样可以消除大部分运行时的约束警告",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "明天的计划---",
         "msg": "1. 目前只有 tv.sections 的改动，会自动刷新列表数据。cells 的改动，还没有建立监听，待明天完成\n\n2. 可以写写点击事件的测试样例\n\n3. template > header、footer 还没有完成",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "下一步的计划---",
         "msg": "凌晨的计划，全部都完成了。新的计划：\n1. 提供简便的，对 Cell 数组操作（增删查改）的方法\n（增删查还行。改的话，只能监听到对数组元素替换（而非属性height、data...修改）时的修改而触发刷新）",
-        "time": "2020/01/02"
+        "time": "2021/01/02"
     },
     {
         "title": "计划完成---",
         "msg": "很快啊，简便的对 Cell 数组操作（增删查改）的方法已经完成了，Demo 请看 Section 0",
-        "time": "2020/01/03"
+        "time": "2021/01/03"
     },
     {
         "title": "完成了可配置的 CollectionView ",
         "msg": "基本上照着 TableView 的代码抄一遍，完成了可配置的 CollectionView\n\n 这过程中还参考了之前写过的代码，又统一给它们添加了 section 内多选/单选功能，以及强制选择的功能。",
-        "time": "2020/01/03"
+        "time": "2021/01/03"
     },
     {
         "title": "单选、多选",
         "msg": "比如：当前这个 Section 被设置为单选，并且是强制必须要选择一项；\n而上面那一组 section 0 是多选的",
-        "time": "2020/01/03"
+        "time": "2021/01/03"
     },
     {
         "title": "类型统一整理",
         "msg": "不管TableView 还是 CollectionView, 它们的 Cell、HeaderFooter 要遵循的协议都被统一为同一个了, 不过具体的类型还是得继承不同的类。\n\nCell 和 Section 的配置也都被统一了，大家都使用 TTCellTemplate, TTReusableViewTemplate, TTSectionTemplate 类来对列表进行配置",
-        "time": "2020/02/04"
+        "time": "2021/02/04"
     },
     {
         "title": "Section 支持统一配置",
         "msg": "Section 也支持了 class, width, height, willDisplay 等熟悉的配置直接作用于整个组，当然也支持子 Cell 差异化配置。",
-        "time": "2020/02/04"
+        "time": "2021/02/04"
     },
     {
         "title": "Cell 支持直接使用 data",
         "msg": "如果 Section 统一配置了，那么 section.cells 就可以不需要任何配置，直接插入普通对象 data 就可以渲染出 Cell 了",
-        "time": "2020/02/04"
+        "time": "2021/02/04"
     }
 ]
