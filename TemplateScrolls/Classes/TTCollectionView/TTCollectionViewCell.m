@@ -6,7 +6,7 @@
 //
 
 #import "TTCollectionViewCell.h"
-#import "TTPrivate.h"
+#import "UIView+TTReusableView.h"
 
 @implementation TTCollectionViewCell
 
@@ -57,7 +57,7 @@
 #pragma mark - TTCellProvider
 
 + (NSString *)cellIdentifier {
-    return _DefaultReusableIdentifer(self, _cmd, @"Cell");
+    return [self tt_identifierWithKey:_cmd name:@"Cell"];
 }
 
 + (instancetype)dequeueCellWithListView:(UIScrollView *)listView

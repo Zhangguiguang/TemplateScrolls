@@ -37,15 +37,6 @@ typedef NSMutableArray<TTSectionTemplate *> TTCollectionTemplateArray;
  */
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout NS_UNAVAILABLE;
 
-// 自带的 insert、delete 不可用,
-// 直接对 sections 及 cells 进行操作即可
-// reload 方法没有数组操作，不影响使用
-- (void)insertSections:(NSIndexSet *)sections NS_UNAVAILABLE;
-- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection NS_UNAVAILABLE;
-
-- (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths NS_UNAVAILABLE;
-- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath NS_UNAVAILABLE;
-
 // 系统的 delegate 和 dataSouce 都是不可用的
 // 如果有需要，使用 additionalDataSource 和 additionalDelegate
 - (void)setDelegate:(nullable id<UICollectionViewDelegate>)delegate NS_UNAVAILABLE;

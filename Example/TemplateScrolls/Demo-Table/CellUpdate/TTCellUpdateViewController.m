@@ -83,8 +83,9 @@
     model.time = [formater stringFromDate:[NSDate date]];
 
     TTCellTemplate *cell = TTCellTemplate.make.dataSet(model);
-
-    [self.tableView insertCells:@[indexPath] withTemplates:@[cell]];
+    
+    TTSectionTemplate *section = self.sections[indexPath.section];
+    [section.cells insertObject:cell atIndex:indexPath.row];
 }
 
 - (void)_removeCellAtIndexPath:(NSIndexPath *)indexPath {

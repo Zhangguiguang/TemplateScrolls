@@ -171,21 +171,10 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
  */
 @property (nonatomic, copy) TTCellDidSelect didSelect;
 
-- (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
-- (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts;
-- (void)deleteSections:(NSIndexSet *)indexes;
-
-- (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt;
-- (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt;
-- (void)deleteSection:(NSInteger)section;
-
-- (void)insertCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells;
-- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells;
-
 /**
- 刷新 Cell, 但是并不需要修改数据
+ 使用数据刷新指定位置的 Cell
  */
-- (void)reloadCells:(NSArray<NSIndexPath *> *)indexPaths;
+- (void)reloadCell:(NSIndexPath *)indexPath withData:(id)newData;
 
 /**
  删除指定位置的 Cell
@@ -195,7 +184,11 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
 
 - (TTReusableViewTemplate *)headerAtSection:(NSInteger)section;
 - (TTReusableViewTemplate *)footerAtSection:(NSInteger)section;
-- (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ @return cell 的配置可以是 template 类型，也有可能是普通的 data
+ */
+- (nullable TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath;
 - (id)cellDataAtIndexPath:(NSIndexPath *)indexPath;
 
 #pragma mark - Selection

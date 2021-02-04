@@ -29,23 +29,6 @@ typedef NSMutableArray<TTSectionTemplate *> TTTableTemplateArray;
 
 @interface TTTableView (TTUnavailable)
 
-// 自带的 insert、delete 不可用,
-// 直接对 sections 及 cells 进行操作即可
-// reload 方法没有数组操作，不影响使用
-- (void)insertSections:(NSIndexSet *)sections
-      withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
-- (void)deleteSections:(NSIndexSet *)sections
-      withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
-- (void)moveSection:(NSInteger)section
-          toSection:(NSInteger)newSection NS_UNAVAILABLE;
-
-- (void)insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
-              withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
-- (void)deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
-              withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;
-- (void)moveRowAtIndexPath:(NSIndexPath *)indexPath
-               toIndexPath:(NSIndexPath *)newIndexPath NS_UNAVAILABLE;
-
 // 系统的 delegate 和 dataSouce 都是不可用的
 // 如果有需要，使用 additionalDataSource 和 additionalDelegate
 - (void)setDelegate:(nullable id<UITableViewDelegate>)delegate NS_UNAVAILABLE;

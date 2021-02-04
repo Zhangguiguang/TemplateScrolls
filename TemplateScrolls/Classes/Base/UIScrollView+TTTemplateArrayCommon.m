@@ -14,7 +14,7 @@
 
 - (Class<TTCellProvider>)viewClassAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
-    TTCellTemplate *cell = section.cells[[indexPath indexAtPosition:1]];
+    TTCellTemplate *cell = section.cells[indexPath.item];
     if ([cell isKindOfClass:[TTCellTemplate class]] && cell.viewClass) {
         return cell.viewClass;
     }
@@ -23,7 +23,7 @@
 
 - (CGFloat)widthAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
-    TTCellTemplate *cell = section.cells[[indexPath indexAtPosition:1]];
+    TTCellTemplate *cell = section.cells[indexPath.item];
     if (cell.width > 0) {
         return cell.width;
     }
@@ -32,7 +32,7 @@
 
 - (CGFloat)heightAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
-    TTCellTemplate *cell = section.cells[[indexPath indexAtPosition:1]];
+    TTCellTemplate *cell = section.cells[indexPath.item];
     if (cell.height > 0) {
         return cell.height;
     }
@@ -41,7 +41,7 @@
 
 - (TTCellWillDisplay)willDisplayAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
-    TTCellTemplate *cell = section.cells[[indexPath indexAtPosition:1]];
+    TTCellTemplate *cell = section.cells[indexPath.item];
     if ([cell isKindOfClass:[TTCellTemplate class]] && cell.willDisplay) {
         return cell.willDisplay;
     }
@@ -53,7 +53,7 @@
 
 - (TTCellDidSelect)didSelectAtIndexPath:(NSIndexPath *)indexPath {
     TTSectionTemplate *section = self.sections[indexPath.section];
-    TTCellTemplate *cell = section.cells[[indexPath indexAtPosition:1]];
+    TTCellTemplate *cell = section.cells[indexPath.item];
     if ([cell isKindOfClass:[TTCellTemplate class]] && cell.didSelect) {
         return cell.didSelect;
     }
@@ -64,6 +64,55 @@
 }
 
 #pragma mark - TTTemplateArrayOperator
+
+- (void)reloadCell:(NSIndexPath *)indexPath withData:(id)newData {
+    TTSectionTemplate *section = self.sections[indexPath.section];
+    TTCellTemplate *cell = section.cells[indexPath.item];
+    if ([cell isKindOfClass:[TTCellTemplate class]]) {
+        cell.data = newData;
+        section.cells[indexPath.item] = cell;
+    } else {
+        section.cells[indexPath.item] = newData;
+    }
+}
+
+- (void)deleteCells:(NSArray<NSIndexPath *> *)indexPaths deleteSection:(BOOL)needDelete {
+    if (indexPaths.count == 1) {
+        NSIndexPath *ip = indexPaths.firstObject;
+        [self.sections[ip.section].cells removeObjectAtIndex:ip.item];
+        
+        if (needDelete && self.sections[ip.section].cells.count == 0) {
+            [self.sections removeObjectAtIndex:ip.section];
+        }
+        
+    } else {
+        NSMutableDictionary<NSNumber *, NSMutableIndexSet *> *section_indexes_pair = [NSMutableDictionary dictionary];
+        [indexPaths enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+            NSMutableIndexSet *indexSet = section_indexes_pair[@(obj.section)];
+            if (!indexSet) {
+                indexSet = [NSMutableIndexSet indexSet];
+                section_indexes_pair[@(obj.section)] = indexSet;
+            }
+            [indexSet addIndex:obj.item];
+        }];
+        
+        NSMutableIndexSet *willDeleteSections = needDelete ? [NSMutableIndexSet indexSet] : nil;
+        [section_indexes_pair enumerateKeysAndObjectsUsingBlock:^(NSNumber *s, NSMutableIndexSet *indexes, BOOL *stop) {
+            NSInteger section = [s integerValue];
+            if (self.sections[section].cells.count <= indexes.count) {
+                // 这种情况本该奔溃的
+                [willDeleteSections addIndex:section];
+                [self.sections[section].cells removeAllObjects];
+            } else {
+                [self.sections[section].cells removeObjectsAtIndexes:indexes];
+            }
+        }];
+        
+        if (willDeleteSections.count > 0) {
+            [self.sections removeObjectsAtIndexes:willDeleteSections];
+        }
+    }
+}
 
 - (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
     return self.sections[section].header;
@@ -86,6 +135,29 @@
         return template.data;
     }
     return template;
+}
+
+- (NSArray<NSIndexPath *> *)indexPathsForSelectedCellsInSection:(NSInteger)section {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.section == %ld", section];
+    return [[self indexPathsForSelectedCells] filteredArrayUsingPredicate:predicate];
+}
+
+- (NSArray *)datasForSelectedCells {
+    NSArray *sectionSelected = [self indexPathsForSelectedCells];
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:sectionSelected.count];
+    [sectionSelected enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+        [datas addObject:[self cellDataAtIndexPath:obj]];
+    }];
+    return [datas copy];
+}
+
+- (NSArray *)datasForSelectedCellsInSection:(NSInteger)section {
+    NSArray *sectionSelected = [self indexPathsForSelectedCellsInSection:section];
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:sectionSelected.count];
+    [sectionSelected enumerateObjectsUsingBlock:^(NSIndexPath *obj, NSUInteger idx, BOOL *stop) {
+        [datas addObject:[self cellDataAtIndexPath:obj]];
+    }];
+    return [datas copy];
 }
 
 @end

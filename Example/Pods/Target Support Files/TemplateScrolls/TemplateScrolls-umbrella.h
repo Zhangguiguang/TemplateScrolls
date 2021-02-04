@@ -11,10 +11,10 @@
 #endif
 
 #import "TemplateScrolls.h"
-#import "TTPrivate.h"
 #import "TTScrollProtocol.h"
 #import "TTViewTemplate.h"
 #import "UIScrollView+TTTemplateArrayCommon.h"
+#import "UIView+TTReusableView.h"
 #import "TTCollectionReusableView.h"
 #import "TTCollectionView.h"
 #import "TTCollectionViewCell.h"

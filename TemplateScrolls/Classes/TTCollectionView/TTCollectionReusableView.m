@@ -6,7 +6,7 @@
 //
 
 #import "TTCollectionReusableView.h"
-#import "TTPrivate.h"
+#import "UIView+TTReusableView.h"
 
 @implementation TTCollectionReusableView
 
@@ -56,11 +56,11 @@
 #pragma mark - TTReusableViewProvider
 
 + (NSString *)headerIdentifier {
-    return _DefaultReusableIdentifer(self, _cmd, @"Header");
+    return [self tt_identifierWithKey:_cmd name:@"Header"];
 }
 
 + (NSString *)footerIdentifier {
-    return _DefaultReusableIdentifer(self, _cmd, @"Footer");
+    return [self tt_identifierWithKey:_cmd name:@"Footer"];
 }
 
 + (instancetype)dequeueHeaderWithListView:(UIScrollView *)listView
