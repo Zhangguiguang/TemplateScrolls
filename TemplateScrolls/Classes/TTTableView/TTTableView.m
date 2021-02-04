@@ -78,7 +78,7 @@
     
     if (fixedHeight == TTViewAutomaticDimension) {
         // 继续向下执行
-    } else if (fixedHeight >= 0) {
+    } else if (fixedHeight > 0) {
         // 固定的高度
         return fixedHeight;
     }
@@ -105,7 +105,7 @@
 heightForReusableTemplate:(TTReusableViewTemplate *)template
              isHeader:(BOOL)isHeader {
     // 固定的高度
-    if (template.height >= 0) {
+    if (template.height > 0) {
         return template.height;
     }
     

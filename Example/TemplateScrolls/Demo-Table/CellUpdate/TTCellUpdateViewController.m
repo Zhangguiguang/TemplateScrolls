@@ -36,8 +36,8 @@
     }
     {
         // 添加两个间距 Cell
-        [section.cells addObject:TTCellTemplate.make.heightSet(10)];
-        [section.cells addObject:TTCellTemplate.make.heightSet(10)];
+        [section.cells addObject:TTCellTemplate.make.viewClassSet([TTTableViewCell class]).heightSet(10)];
+        [section.cells addObject:TTCellTemplate.make.viewClassSet([TTTableViewCell class]).heightSet(10)];
     }
     {
         TTMessageModel *model = [TTMessageModel new];

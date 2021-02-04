@@ -9,7 +9,6 @@
 #import <TTMutableArray/TTMutableArray.h>
 
 const CGFloat TTViewAutomaticDimension = CGFLOAT_MAX;
-const CGFloat TTViewNODimension = -1;
 
 @protocol TTCellTemplateDelegate <NSObject>
 - (void)templateDidUpdatedData:(TTCellTemplate *)template;
@@ -25,15 +24,6 @@ TTChainPropertyImplement(TTCellTemplate, Class<TTCellProvider>, viewClass)
 TTChainPropertyImplement(TTCellTemplate, id, data)
 TTChainPropertyImplement(TTCellTemplate, CGFloat, width)
 TTChainPropertyImplement(TTCellTemplate, CGFloat, height)
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _width = TTViewNODimension;
-        _height = TTViewNODimension;
-    }
-    return self;
-}
 
 + (TTCellTemplate *)make {
     return [self new];
@@ -54,14 +44,6 @@ TTChainPropertyImplement(TTCellTemplate, CGFloat, height)
 TTChainPropertyImplement(TTReusableViewTemplate, Class<TTReusableViewProvider>, viewClass)
 TTChainPropertyImplement(TTReusableViewTemplate, id, data)
 TTChainPropertyImplement(TTReusableViewTemplate, CGFloat, height)
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _height = TTViewNODimension;
-    }
-    return self;
-}
 
 + (TTReusableViewTemplate *)make {
     return [self new];
@@ -89,15 +71,6 @@ TTChainPropertyImplement(TTSectionTemplate, UIEdgeInsets, insets)
 TTChainPropertyImplement(TTSectionTemplate, CGFloat, horizontalSpacing)
 TTChainPropertyImplement(TTSectionTemplate, CGFloat, verticalSpacing)
 TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment)
-
-- (instancetype)init {
-    self = [super init];
-    if (self) {
-        _width = TTViewNODimension;
-        _height = TTViewNODimension;
-    }
-    return self;
-}
 
 + (__kindof TTSectionTemplate *)make {
     return [self new];

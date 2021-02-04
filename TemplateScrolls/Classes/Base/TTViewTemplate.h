@@ -24,15 +24,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- cell 如果是 TTViewNODimension, 它不能覆盖 section 所设置的统一尺寸
+ cell 的默认尺寸是 0
+ cell 如果是 0, 它不能覆盖 section 所设置的统一尺寸
  但是 TTViewAutomaticDimension 可以覆盖
  */
 UIKIT_EXTERN const CGFloat TTViewAutomaticDimension;
-
-/**
- 默认的尺寸
- */
-UIKIT_EXTERN const CGFloat TTViewNODimension;
 
 typedef void (^TTCellWillDisplay)(NSIndexPath *indexPath, __nullable id data, __kindof UIView *me);
 typedef void (^TTCellDidSelect)(NSIndexPath *indexPath, __nullable id data);

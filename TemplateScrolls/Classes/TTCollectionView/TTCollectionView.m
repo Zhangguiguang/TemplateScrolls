@@ -112,7 +112,7 @@
     
     if (fixedWidth == TTViewAutomaticDimension || fixedHeight == TTViewAutomaticDimension) {
         // 继续往下
-    } else if (template.width >= 0 && template.height >= 0) {
+    } else if (template.width > 0 && template.height > 0) {
         return CGSizeMake(template.width, template.height);
     }
     
