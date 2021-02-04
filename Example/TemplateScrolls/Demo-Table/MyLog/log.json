@@ -33,7 +33,7 @@
     },
     {
         "title": "明天的计划---",
-        "msg": "1. 目前只有 tv.templateArray 的改动，会自动刷新列表数据。cellArray 的改动，还没有建立监听，待明天完成\n\n2. 可以写写点击事件的测试样例\n\n3. template > header、footer 还没有完成",
+        "msg": "1. 目前只有 tv.sections 的改动，会自动刷新列表数据。cells 的改动，还没有建立监听，待明天完成\n\n2. 可以写写点击事件的测试样例\n\n3. template > header、footer 还没有完成",
         "time": "2020/01/02",
     },
     {

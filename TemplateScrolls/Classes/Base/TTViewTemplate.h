@@ -112,7 +112,7 @@ TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, height);
 @property (null_resettable, nonatomic, strong) TTReusableViewTemplate *header;
 @property (null_resettable, nonatomic, strong) TTReusableViewTemplate *footer;
 
-@property (nonatomic, readonly) NSMutableArray<TTCellTemplate *> *cellArray;
+@property (nonatomic, readonly) NSMutableArray<TTCellTemplate *> *cells;
 
 /**
  可以设置该 Section 的元素单选\多选
@@ -153,7 +153,7 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
 @protocol TTTemplateArrayOperator <NSObject>
 
 @required
-@property (nonatomic, readonly) NSMutableArray<TTSectionTemplate *> *templateArray;
+@property (nonatomic, readonly) NSMutableArray<TTSectionTemplate *> *sections;
 
 @optional
 

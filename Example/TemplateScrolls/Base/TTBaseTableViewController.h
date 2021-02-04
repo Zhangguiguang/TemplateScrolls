@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TTBaseTableViewController : UIViewController
 
 @property (nonatomic, readonly) TTTableView *tableView;
-@property (nonatomic, readonly) TTTableTemplateArray *templateArray;
+@property (nonatomic, readonly) TTTableTemplateArray *sections;
 
 - (void)makeSkeleton;
 

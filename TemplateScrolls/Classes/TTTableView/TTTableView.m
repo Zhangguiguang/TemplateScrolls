@@ -15,7 +15,7 @@
 @interface TTTableView () <TTMutableArrayObserver, _TTSectionObserver,
                         UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic, strong) TTTableTemplateArray *templateArray;
+@property (nonatomic, strong) TTTableTemplateArray *sections;
 
 @end
 
@@ -41,17 +41,17 @@
 #pragma mark - UITableViewDelegate, UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return self.templateArray.count;
+    return self.sections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.templateArray[section].cellArray.count;
+    return self.sections[section].cells.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = [self.templateArray tt_viewClassAtIndexPath:indexPath] ? : [TTTableViewCell class];
+    Class<TTCellProvider> provider = [self.sections tt_viewClassAtIndexPath:indexPath] ? : [TTTableViewCell class];
     
     TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
@@ -59,14 +59,14 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].header;
+    TTReusableViewTemplate *template = self.sections[section].header;
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
     TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider headerIdentifier]];
     reuseView.data = template.data;
     return reuseView;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].footer;
+    TTReusableViewTemplate *template = self.sections[section].footer;
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
     TTTableReusableView *reuseView = [tableView dequeueReusableHeaderFooterViewWithIdentifier:[provider footerIdentifier]];
     reuseView.data = template.data;
@@ -74,7 +74,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat fixedHeight = [self.templateArray tt_heightAtIndexPath:indexPath];
+    CGFloat fixedHeight = [self.sections tt_heightAtIndexPath:indexPath];
     
     if (fixedHeight == TTViewAutomaticDimension) {
         // 继续向下执行
@@ -93,12 +93,12 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].header;
+    TTReusableViewTemplate *template = self.sections[section].header;
     return [self _tableView:tableView heightForReusableTemplate:template isHeader:YES];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].footer;
+    TTReusableViewTemplate *template = self.sections[section].footer;
     return [self _tableView:tableView heightForReusableTemplate:template isHeader:NO];
 }
 - (CGFloat)_tableView:(UITableView *)tableView
@@ -131,7 +131,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         template.willDisplay(indexPath, template.data, cell);
         return;
     }
-    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    TTSectionTemplate *section = self.sections[indexPath.section];
     if (section.willDisplay) {
         section.willDisplay(indexPath, template.data, cell);
         return;
@@ -147,7 +147,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view
        forSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].header;
+    TTReusableViewTemplate *template = self.sections[section].header;
     if (template.willDisplay) {
         template.willDisplay(section, template.data, view);
         return;
@@ -159,7 +159,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view
        forSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].footer;
+    TTReusableViewTemplate *template = self.sections[section].footer;
     if (template.willDisplay) {
         template.willDisplay(section, template.data, view);
         return;
@@ -174,8 +174,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     // 处理高度存储的逻辑
     do {
         // Cell 是否还继续存在于列表中
-        BOOL isCellKeepExist = self.templateArray.count > indexPath.section
-        && self.templateArray[indexPath.section].cellArray.count > indexPath.row;
+        BOOL isCellKeepExist = self.sections.count > indexPath.section
+        && self.sections[indexPath.section].cells.count > indexPath.row;
         
         if (!isCellKeepExist) {
             break;
@@ -210,7 +210,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         template.didSelect(indexPath, template.data);
         return;
     }
-    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    TTSectionTemplate *section = self.sections[indexPath.section];
     if (section.didSelect) {
         section.didSelect(indexPath, template.data);
         return;
@@ -230,7 +230,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         return indexPath;
     }
     
-    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    TTSectionTemplate *template = self.sections[indexPath.section];
     if (template.allowsMultipleSelection) {
         // 允许多选，也不需要其他处理
         return indexPath;
@@ -247,7 +247,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    TTSectionTemplate *template = self.sections[indexPath.section];
     if (template.forceSelection == NO) {
         // 不强制选中，可以取消
         return indexPath;
@@ -266,33 +266,33 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark - TTTemplateArrayOperator
 
-- (TTTableTemplateArray *)templateArray {
-    if (!_templateArray) {
+- (TTTableTemplateArray *)sections {
+    if (!_sections) {
         TTMutableArray *temp = [TTMutableArray new];
         temp.observer = self;
-        _templateArray = temp;
+        _sections = temp;
     }
-    return _templateArray;
+    return _sections;
 }
 
 - (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts {
-    [self.templateArray insertObjects:tts atIndexes:indexes];
+    [self.sections insertObjects:tts atIndexes:indexes];
 }
 - (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray<TTSectionTemplate *> *)tts {
-    [self.templateArray replaceObjectsAtIndexes:indexes withObjects:tts];
+    [self.sections replaceObjectsAtIndexes:indexes withObjects:tts];
 }
 - (void)deleteSections:(NSIndexSet *)indexes {
-    [self.templateArray removeObjectsAtIndexes:indexes];
+    [self.sections removeObjectsAtIndexes:indexes];
 }
 
 - (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
-    [self.templateArray insertObject:tt atIndex:section];
+    [self.sections insertObject:tt atIndex:section];
 }
 - (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
-    [self.templateArray replaceObjectAtIndex:section withObject:tt];
+    [self.sections replaceObjectAtIndex:section withObject:tt];
 }
 - (void)deleteSection:(NSInteger)section {
-    [self.templateArray removeObjectAtIndex:section];
+    [self.sections removeObjectAtIndex:section];
 }
 
 - (void)insertCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells {
@@ -302,7 +302,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             *stop = YES; return; // == break
         }
         NSIndexPath *ip = indexPaths[idx];
-        [self.templateArray[ip.section].cellArray insertObject:cell atIndex:ip.row];
+        [self.sections[ip.section].cells insertObject:cell atIndex:ip.row];
     }];
     [self endUpdates];
 }
@@ -314,7 +314,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             *stop = YES; return; // == break
         }
         NSIndexPath *ip = indexPaths[idx];
-        [self.templateArray[ip.section].cellArray replaceObjectAtIndex:ip.row withObject:cell];
+        [self.sections[ip.section].cells replaceObjectAtIndex:ip.row withObject:cell];
     }];
     [self endUpdates];
 }
@@ -327,10 +327,10 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self beginUpdates];
     if (indexPaths.count == 1) {
         NSIndexPath *ip = indexPaths.firstObject;
-        [self.templateArray[ip.section].cellArray removeObjectAtIndex:ip.row];
+        [self.sections[ip.section].cells removeObjectAtIndex:ip.row];
         
-        if (needDelete && self.templateArray[ip.section].cellArray.count == 0) {
-            [self.templateArray removeObjectAtIndex:ip.section];
+        if (needDelete && self.sections[ip.section].cells.count == 0) {
+            [self.sections removeObjectAtIndex:ip.section];
         }
         
     } else {
@@ -347,33 +347,33 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         NSMutableIndexSet *willDeleteSections = needDelete ? [NSMutableIndexSet indexSet] : nil;
         [section_indexes_pair enumerateKeysAndObjectsUsingBlock:^(NSNumber *s, NSMutableIndexSet *indexes, BOOL *stop) {
             NSInteger section = [s integerValue];
-            if (self.templateArray[section].cellArray.count <= indexes.count) {
+            if (self.sections[section].cells.count <= indexes.count) {
                 // 这种情况本该奔溃的
                 [willDeleteSections addIndex:section];
-                [self.templateArray[section].cellArray removeAllObjects];
+                [self.sections[section].cells removeAllObjects];
             } else {
-                [self.templateArray[section].cellArray removeObjectsAtIndexes:indexes];
+                [self.sections[section].cells removeObjectsAtIndexes:indexes];
             }
         }];
         
         if (willDeleteSections.count > 0) {
-            [self.templateArray removeObjectsAtIndexes:willDeleteSections];
+            [self.sections removeObjectsAtIndexes:willDeleteSections];
         }
     }
     [self endUpdates];
 }
 
 - (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
-    return self.templateArray[section].header;
+    return self.sections[section].header;
 }
 - (TTReusableViewTemplate *)footerAtSection:(NSInteger)section {
-    return self.templateArray[section].footer;
+    return self.sections[section].footer;
 }
 - (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath {
-    return self.templateArray[indexPath.section].cellArray[indexPath.row];
+    return self.sections[indexPath.section].cells[indexPath.row];
 }
 - (id)cellDataAtIndexPath:(NSIndexPath *)indexPath {
-    return self.templateArray[indexPath.section].cellArray[indexPath.row].data;
+    return self.sections[indexPath.section].cells[indexPath.row].data;
 }
 
 - (NSArray<NSIndexPath *> *)indexPathsForSelectedCells {
@@ -438,7 +438,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
         [self _registerReusableView:section.header isHeader:YES];
         [self _registerReusableView:section.footer isHeader:NO];
-        [self _registerCellWithCells:section.cellArray];
+        [self _registerCellWithCells:section.cells];
     }];
     // section 也和 cell 都有 viewClass 属性，同样要注册一下
     [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
@@ -499,7 +499,7 @@ didReplaceCells:(NSArray<TTCellTemplate *> *)objects
 
 - (nullable NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTSectionTemplate *)section
                                            indexes:(NSIndexSet *)indexes {
-    __block NSInteger s = [self.templateArray indexOfObject:section];
+    __block NSInteger s = [self.sections indexOfObject:section];
     if (s == NSNotFound) {
         return nil;
     }

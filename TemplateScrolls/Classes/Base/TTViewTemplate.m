@@ -117,19 +117,19 @@ TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment
     return _footer;
 }
 
-@synthesize cellArray = _cellArray;
-- (NSMutableArray *)cellArray {
-    if (!_cellArray) {
-        _cellArray = [TTMutableArray array];
-        ((TTMutableArray *)_cellArray).observer = self;
+@synthesize cells = _cells;
+- (NSMutableArray *)cells {
+    if (!_cells) {
+        _cells = [TTMutableArray array];
+        ((TTMutableArray *)_cells).observer = self;
     }
-    return _cellArray;
+    return _cells;
 }
 
 #pragma mark - TTViewTemplateDelegate
 
 - (void)templateDidUpdatedData:(TTCellTemplate *)template {
-    NSInteger index = [self.cellArray indexOfObject:template];
+    NSInteger index = [self.cells indexOfObject:template];
     if (index == NSNotFound) {
         return;
     }

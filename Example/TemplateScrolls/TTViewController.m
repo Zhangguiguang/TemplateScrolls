@@ -25,10 +25,10 @@
             cell.viewClass = [TTTableViewCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
     {
         TTSectionTemplate *section = [TTSectionTemplate new];
@@ -43,10 +43,10 @@
             cell.viewClass = [TTTableViewCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
     
     self.tableView.willDisplay = ^(NSIndexPath *indexPath, NSDictionary *data, UITableViewCell *me) {

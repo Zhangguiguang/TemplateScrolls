@@ -18,7 +18,7 @@ typedef NSMutableArray<TTSectionTemplate *> TTTableTemplateArray;
 /**
  只需要配置这个模板数组，tableView 就会自动渲染数据
  */
-@property (nonatomic, readonly) TTTableTemplateArray *templateArray;
+@property (nonatomic, readonly) TTTableTemplateArray *sections;
 
 // 这两个代理的部分代理方法，是无效的，被内部强制实现了
 @property (nonatomic, weak, nullable) id <UITableViewDataSource> additionalDataSource;
@@ -43,7 +43,7 @@ typedef NSMutableArray<TTSectionTemplate *> TTTableTemplateArray;
 @interface TTTableView (TTUnavailable)
 
 // 自带的 insert、delete 不可用,
-// 直接对 templateArray 及 cellArray 进行操作即可
+// 直接对 sections 及 cells 进行操作即可
 // reload 方法没有数组操作，不影响使用
 - (void)insertSections:(NSIndexSet *)sections
       withRowAnimation:(UITableViewRowAnimation)animation NS_UNAVAILABLE;

@@ -19,7 +19,7 @@
 
 - (void)currentInfo {
     NSMutableString *newData = [NSMutableString stringWithString:@"选项情况：\n"];
-    [self.templateArray enumerateObjectsUsingBlock:^(TTSectionTemplate *obj, NSUInteger idx, BOOL *stop) {
+    [self.sections enumerateObjectsUsingBlock:^(TTSectionTemplate *obj, NSUInteger idx, BOOL *stop) {
         [newData appendFormat:@"\nSection %ld\n", idx];
         [newData appendFormat:@"是否多选：%d, 是否允许取消：%d\n", obj.allowsMultipleSelection, !obj.forceSelection];
         
@@ -50,10 +50,10 @@
             cell.viewClass = [TTTableCheckBoxCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
     {
         TTSectionTemplate *section = [TTSectionTemplate new];
@@ -69,10 +69,10 @@
             cell.viewClass = [TTTableCheckBoxCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
     {
         TTSectionTemplate *section = [TTSectionTemplate new];
@@ -87,10 +87,10 @@
             cell.viewClass = [TTTableRadioCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
     {
         TTSectionTemplate *section = [TTSectionTemplate new];
@@ -106,10 +106,10 @@
             cell.viewClass = [TTTableRadioCell class];
             cell.data = obj;
             
-            [section.cellArray addObject:cell];
+            [section.cells addObject:cell];
         }];
         
-        [self.templateArray addObject:section];
+        [self.sections addObject:section];
     }
 }
 

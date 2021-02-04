@@ -32,12 +32,12 @@
             tt_strongify(self);
             [self _appendCellAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row+2 inSection:indexPath.section]];
         };
-        [section.cellArray addObject:cell];
+        [section.cells addObject:cell];
     }
     {
         // 添加两个间距 Cell
-        [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
-        [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
+        [section.cells addObject:TTCellTemplate.make.heightSet(10)];
+        [section.cells addObject:TTCellTemplate.make.heightSet(10)];
     }
     {
         TTMessageModel *model = [TTMessageModel new];
@@ -51,7 +51,7 @@
             tt_strongify(self);
             [self _removeCellAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row-2 inSection:indexPath.section]];
         };
-        [section.cellArray addObject:cell];
+        [section.cells addObject:cell];
     }
     {
         TTMessageModel *model = [TTMessageModel new];
@@ -65,10 +65,10 @@
             tt_strongify(self);
             [self _updateCellAtIndexPath:indexPath];
         };
-        [section.cellArray addObject:cell];
+        [section.cells addObject:cell];
     }
 
-    [self.tableView.templateArray addObject:section];
+    [self.tableView.sections addObject:section];
 }
 
 - (void)_appendCellAtIndexPath:(NSIndexPath *)indexPath {

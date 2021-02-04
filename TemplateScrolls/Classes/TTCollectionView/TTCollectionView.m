@@ -14,7 +14,7 @@
 @interface TTCollectionView () <TTMutableArrayObserver, _TTSectionObserver,
                     UICollectionViewDataSource, TTCollectionViewDelegateFlowLayout>
 
-@property (nonatomic, strong) TTCollectionTemplateArray *templateArray;
+@property (nonatomic, strong) TTCollectionTemplateArray *sections;
 
 @property (nonatomic, strong) TTCollectionViewLayout *layout;
 
@@ -50,7 +50,7 @@
     if ([_outerDelegate respondsToSelector:@selector(collectionView:layout:alignmentItemsInSection:)]) {
         return [_outerDelegate collectionView:collectionView layout:layout alignmentItemsInSection:section];
     }
-    return self.templateArray[section].alignment;
+    return self.sections[section].alignment;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView
@@ -65,18 +65,18 @@
 #pragma mark - UICollectionViewDataSource, UICollectionViewDelegate
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return self.templateArray.count;
+    return self.sections.count;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView
      numberOfItemsInSection:(NSInteger)section {
-    return self.templateArray[section].cellArray.count;
+    return self.sections[section].cells.count;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = [self.templateArray tt_viewClassAtIndexPath:indexPath] ? : [TTCollectionViewCell class];
+    Class<TTCellProvider> provider = [self.sections tt_viewClassAtIndexPath:indexPath] ? : [TTCollectionViewCell class];
     
     TTCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
@@ -89,11 +89,11 @@
     TTReusableViewTemplate *template = nil;
     NSString *identifier = nil;
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        template = self.templateArray[indexPath.section].header;
+        template = self.sections[indexPath.section].header;
         Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
         identifier = [provider headerIdentifier];
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        template = self.templateArray[indexPath.section].footer;
+        template = self.sections[indexPath.section].footer;
         Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
         identifier = [provider footerIdentifier];
     }
@@ -107,8 +107,8 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    CGFloat fixedWidth = [self.templateArray tt_widthAtIndexPath:indexPath];
-    CGFloat fixedHeight = [self.templateArray tt_heightAtIndexPath:indexPath];
+    CGFloat fixedWidth = [self.sections tt_widthAtIndexPath:indexPath];
+    CGFloat fixedHeight = [self.sections tt_heightAtIndexPath:indexPath];
     
     if (fixedWidth == TTViewAutomaticDimension || fixedHeight == TTViewAutomaticDimension) {
         // 继续往下
@@ -127,7 +127,7 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
 referenceSizeForHeaderInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].header;
+    TTReusableViewTemplate *template = self.sections[section].header;
     return [self _collectionView:collectionView sizeForReusableTemplate:template isHeader:YES];
 
 }
@@ -135,7 +135,7 @@ referenceSizeForHeaderInSection:(NSInteger)section {
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
 referenceSizeForFooterInSection:(NSInteger)section {
-    TTReusableViewTemplate *template = self.templateArray[section].footer;
+    TTReusableViewTemplate *template = self.sections[section].footer;
     return [self _collectionView:collectionView sizeForReusableTemplate:template isHeader:NO];
 }
 
@@ -160,21 +160,21 @@ referenceSizeForFooterInSection:(NSInteger)section {
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
-    TTSectionTemplate *template = self.templateArray[section];
+    TTSectionTemplate *template = self.sections[section];
     return template.insets;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    TTSectionTemplate *template = self.templateArray[section];
+    TTSectionTemplate *template = self.sections[section];
     return template.horizontalSpacing;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    TTSectionTemplate *template = self.templateArray[section];
+    TTSectionTemplate *template = self.sections[section];
     return template.verticalSpacing;
 }
 
@@ -186,7 +186,7 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
         template.willDisplay(indexPath, template.data, cell);
         return;
     }
-    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    TTSectionTemplate *section = self.sections[indexPath.section];
     if (section.willDisplay) {
         section.willDisplay(indexPath, template.data, cell);
         return;
@@ -206,9 +206,9 @@ willDisplaySupplementaryView:(UICollectionReusableView *)view
            atIndexPath:(NSIndexPath *)indexPath {
     TTReusableViewTemplate *template = nil;
     if ([kind isEqualToString:UICollectionElementKindSectionHeader]) {
-        template = self.templateArray[indexPath.section].header;
+        template = self.sections[indexPath.section].header;
     } else if ([kind isEqualToString:UICollectionElementKindSectionFooter]) {
-        template = self.templateArray[indexPath.section].footer;
+        template = self.sections[indexPath.section].footer;
     }
     
     if (template.willDisplay) {
@@ -227,7 +227,7 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         template.didSelect(indexPath, template.data);
         return;
     }
-    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    TTSectionTemplate *section = self.sections[indexPath.section];
     if (section.didSelect) {
         section.didSelect(indexPath, template.data);
         return;
@@ -248,7 +248,7 @@ shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
         return YES;
     }
     
-    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    TTSectionTemplate *template = self.sections[indexPath.section];
     if (template.allowsMultipleSelection) {
         // 允许多选，也不需要其他处理
         return YES;
@@ -266,7 +266,7 @@ shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 - (BOOL)collectionView:(UICollectionView *)collectionView
 shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    TTSectionTemplate *template = self.templateArray[indexPath.section];
+    TTSectionTemplate *template = self.sections[indexPath.section];
     if (template.forceSelection == NO) {
         // 不强制选中，可以取消
         return YES;
@@ -285,34 +285,34 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
 
 #pragma mark - TTTemplateArrayOperator
 
-- (TTCollectionTemplateArray *)templateArray {
-    if (!_templateArray) {
+- (TTCollectionTemplateArray *)sections {
+    if (!_sections) {
         TTMutableArray *temp = [TTMutableArray new];
         temp.observer = self;
-        _templateArray = temp;
+        _sections = temp;
     }
-    return _templateArray;
+    return _sections;
 }
 
 - (void)insertSections:(NSIndexSet *)indexes withTemplates:(NSArray *)tts {
-    [self.templateArray insertObjects:tts atIndexes:indexes];
+    [self.sections insertObjects:tts atIndexes:indexes];
 }
 - (void)reloadSections:(NSIndexSet *)indexes withTemplates:(NSArray *)tts {
-    [self.templateArray replaceObjectsAtIndexes:indexes withObjects:tts];
+    [self.sections replaceObjectsAtIndexes:indexes withObjects:tts];
 }
 - (void)deleteSections:(NSIndexSet *)indexes {
     // 系统本身也是这个方法，这里相当于重写
-    [self.templateArray removeObjectsAtIndexes:indexes];
+    [self.sections removeObjectsAtIndexes:indexes];
 }
 
 - (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
-    [self.templateArray insertObject:tt atIndex:section];
+    [self.sections insertObject:tt atIndex:section];
 }
 - (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
-    [self.templateArray replaceObjectAtIndex:section withObject:tt];
+    [self.sections replaceObjectAtIndex:section withObject:tt];
 }
 - (void)deleteSection:(NSInteger)section {
-    [self.templateArray removeObjectAtIndex:section];
+    [self.sections removeObjectAtIndex:section];
 }
 
 - (void)insertCells:(NSArray<NSIndexPath *> *)indexPaths withTemplates:(NSArray<TTCellTemplate *> *)cells {
@@ -322,7 +322,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
                 *stop = YES; return; // == break
             }
             NSIndexPath *ip = indexPaths[idx];
-            [self.templateArray[ip.section].cellArray insertObject:cell atIndex:ip.row];
+            [self.sections[ip.section].cells insertObject:cell atIndex:ip.row];
         }];
     } completion:nil];
 }
@@ -334,7 +334,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
                 *stop = YES; return; // == break
             }
             NSIndexPath *ip = indexPaths[idx];
-            [self.templateArray[ip.section].cellArray replaceObjectAtIndex:ip.row withObject:cell];
+            [self.sections[ip.section].cells replaceObjectAtIndex:ip.row withObject:cell];
         }];
     } completion:nil];
 }
@@ -347,10 +347,10 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     [self performBatchUpdates:^{
         if (indexPaths.count == 1) {
             NSIndexPath *ip = indexPaths.firstObject;
-            [self.templateArray[ip.section].cellArray removeObjectAtIndex:ip.row];
+            [self.sections[ip.section].cells removeObjectAtIndex:ip.row];
             
-            if (needDelete && self.templateArray[ip.section].cellArray.count == 0) {
-                [self.templateArray removeObjectAtIndex:ip.section];
+            if (needDelete && self.sections[ip.section].cells.count == 0) {
+                [self.sections removeObjectAtIndex:ip.section];
             }
             
         } else {
@@ -367,33 +367,33 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
             NSMutableIndexSet *willDeleteSections = needDelete ? [NSMutableIndexSet indexSet] : nil;
             [section_indexes_pair enumerateKeysAndObjectsUsingBlock:^(NSNumber *s, NSMutableIndexSet *indexes, BOOL *stop) {
                 NSInteger section = [s integerValue];
-                if (self.templateArray[section].cellArray.count <= indexes.count) {
+                if (self.sections[section].cells.count <= indexes.count) {
                     // 这种情况本该奔溃的
                     [willDeleteSections addIndex:section];
-                    [self.templateArray[section].cellArray removeAllObjects];
+                    [self.sections[section].cells removeAllObjects];
                 } else {
-                    [self.templateArray[section].cellArray removeObjectsAtIndexes:indexes];
+                    [self.sections[section].cells removeObjectsAtIndexes:indexes];
                 }
             }];
             
             if (willDeleteSections.count > 0) {
-                [self.templateArray removeObjectsAtIndexes:willDeleteSections];
+                [self.sections removeObjectsAtIndexes:willDeleteSections];
             }
         }
     } completion:nil];
 }
 
 - (TTReusableViewTemplate *)headerAtSection:(NSInteger)section {
-    return self.templateArray[section].header;
+    return self.sections[section].header;
 }
 - (TTReusableViewTemplate *)footerAtSection:(NSInteger)section {
-    return self.templateArray[section].footer;
+    return self.sections[section].footer;
 }
 - (TTCellTemplate *)cellTemplateAtIndexPath:(NSIndexPath *)indexPath {
-    return self.templateArray[indexPath.section].cellArray[indexPath.row];
+    return self.sections[indexPath.section].cells[indexPath.row];
 }
 - (id)cellDataAtIndexPath:(NSIndexPath *)indexPath {
-    return self.templateArray[indexPath.section].cellArray[indexPath.row].data;
+    return self.sections[indexPath.section].cells[indexPath.row].data;
 }
 
 - (NSArray<NSIndexPath *> *)indexPathsForSelectedCells {
@@ -458,7 +458,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
         [self _registerReusableView:section.header isHeader:YES];
         [self _registerReusableView:section.footer isHeader:NO];
-        [self _registerCellWithCells:section.cellArray];
+        [self _registerCellWithCells:section.cells];
     }];
     [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
 }
@@ -517,7 +517,7 @@ didReplaceCells:(NSArray<TTCellTemplate *> *)objects
 
 - (nullable NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTSectionTemplate *)section
                                                     indexes:(NSIndexSet *)indexes {
-    __block NSInteger s = [self.templateArray indexOfObject:section];
+    __block NSInteger s = [self.sections indexOfObject:section];
     if (s == NSNotFound) {
         return nil;
     }

@@ -42,8 +42,8 @@
     return _tableView;
 }
 
-- (TTTableTemplateArray *)templateArray {
-    return self.tableView.templateArray;
+- (TTTableTemplateArray *)sections {
+    return self.tableView.sections;
 }
 
 @end

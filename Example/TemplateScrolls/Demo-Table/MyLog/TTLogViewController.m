@@ -30,9 +30,9 @@
         cell.viewClass = [TTMessageCell class];
         cell.data = model;
         cell.height = model.height;
-        [section.cellArray addObject:cell];
+        [section.cells addObject:cell];
     }];
-    [self.templateArray addObject:section];
+    [self.sections addObject:section];
 }
 
 @end
