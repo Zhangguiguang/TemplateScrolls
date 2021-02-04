@@ -29,15 +29,15 @@ typedef NSMutableArray<TTSectionTemplate *> TTCollectionTemplateArray;
 
 /**
  Cell 出现时的回调，它的优先级比 template.willDisplay 低
- template.willDisplay > self.willDisplay > delegate.willDisplay
+ template.willDisplay > section.willDisplay > self.willDisplay > delegate.willDisplay
  */
-@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, id data, __kindof UICollectionViewCell *me);
+@property (nonatomic, copy) TTCellWillDisplay willDisplay;
 
 /**
  Cell 被点击的事件，它的优先级比 template.didSelect 低
- template.didSelect > self.didSelect > delegate.didSelect
+ template.didSelect > section.didSelect > self.didSelect > delegate.didSelect
  */
-@property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, id data);
+@property (nonatomic, copy) TTCellDidSelect didSelect;
 
 @end
 

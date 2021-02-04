@@ -14,6 +14,10 @@
 
 - (void)makeSkeleton {
     TTSectionTemplate *section = [TTSectionTemplate new];
+    section.viewClass = [TTMessageCell class]; // 整个 Section 可以统一配置 Cell 类型
+    section.didSelect = ^(NSIndexPath *indexPath, TTMessageModel *data) {
+        NSLog(@"... section 配置的点击，如果 Cell 没有定义特别的事件，就会被该事件响应 %@ %@", data.title, indexPath);
+    };
     section.allowsMultipleSelection = YES;
     
     {
@@ -22,7 +26,7 @@
         model.msg = @"点击这行，可以在它下面动态的添加一行 Cell";
         model.time = @"2020/01/02";
 
-        TTCellTemplate *cell = TTCellTemplate.make.viewClassSet([TTMessageCell class]).dataSet(model);
+        TTCellTemplate *cell = TTCellTemplate.make.dataSet(model);
         tt_weakify(self);
         cell.didSelect = ^(NSIndexPath *indexPath, id data) {
             tt_strongify(self);
@@ -31,6 +35,7 @@
         [section.cellArray addObject:cell];
     }
     {
+        // 添加两个间距 Cell
         [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
         [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
     }
@@ -40,9 +45,7 @@
         model.msg = @"点击这行，可以删除在它上面的一行 Cell";
         model.time = @"2020/01/02";
 
-        TTCellTemplate *cell = [TTCellTemplate new];
-        cell.viewClass = [TTMessageCell class];
-        cell.data = model;
+        TTCellTemplate *cell = TTCellTemplate.make.dataSet(model);
         tt_weakify(self);
         cell.didSelect = ^(NSIndexPath *indexPath, id data) {
             tt_strongify(self);
@@ -56,9 +59,7 @@
         model.msg = @"点击这行，可以更改这行的数据";
         model.time = @"2020/01/02";
 
-        TTCellTemplate *cell = [TTCellTemplate new];
-        cell.viewClass = [TTMessageCell class];
-        cell.data = model;
+        TTCellTemplate *cell = TTCellTemplate.make.dataSet(model);
         tt_weakify(self);
         cell.didSelect = ^(NSIndexPath *indexPath, id data) {
             tt_strongify(self);
@@ -68,9 +69,6 @@
     }
 
     [self.tableView.templateArray addObject:section];
-    self.tableView.didSelect = ^(NSIndexPath *indexPath, TTMessageModel *data) {
-        NSLog(@"... 普通的点击，如果 Cell 没有定义特别的事件，就会被全局事件响应 %@ %@", data.title, indexPath);
-    };
 }
 
 - (void)_appendCellAtIndexPath:(NSIndexPath *)indexPath {
@@ -84,9 +82,7 @@
     formater.dateFormat = @"yyyy/MM/dd";
     model.time = [formater stringFromDate:[NSDate date]];
 
-    TTCellTemplate *cell = [TTCellTemplate new];
-    cell.viewClass = [TTMessageCell class];
-    cell.data = model;
+    TTCellTemplate *cell = TTCellTemplate.make.dataSet(model);
 
     [self.tableView insertCells:@[indexPath] withTemplates:@[cell]];
 }

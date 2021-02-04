@@ -10,6 +10,7 @@
 #import "TTTableReusableView.h"
 #import <TTMutableArray/TTMutableArray.h>
 #import <UITableView_FDTemplateLayoutCell/UITableView+FDTemplateLayoutCell.h>
+#import "NSArray+TTIndexPathValue.h"
 
 @interface TTTableView () <TTMutableArrayObserver, _TTSectionObserver,
                         UITableViewDelegate, UITableViewDataSource>
@@ -50,7 +51,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = template.viewClass ? : [TTTableViewCell class];
+    Class<TTCellProvider> provider = [self.templateArray tt_viewClassAtIndexPath:indexPath] ? : [TTTableViewCell class];
     
     TTTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
@@ -73,10 +74,13 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    // 固定的高度
-    if (template.height > 0) {
-        return template.height;
+    CGFloat fixedHeight = [self.templateArray tt_heightAtIndexPath:indexPath];
+    
+    if (fixedHeight == TTViewAutomaticDimension) {
+        // 继续向下执行
+    } else if (fixedHeight >= 0) {
+        // 固定的高度
+        return fixedHeight;
     }
     
     // 缓存的高度
@@ -101,7 +105,7 @@
 heightForReusableTemplate:(TTReusableViewTemplate *)template
              isHeader:(BOOL)isHeader {
     // 固定的高度
-    if (template.height > 0) {
+    if (template.height >= 0) {
         return template.height;
     }
     
@@ -125,6 +129,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     if (template.willDisplay) {
         template.willDisplay(indexPath, template.data, cell);
+        return;
+    }
+    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    if (section.willDisplay) {
+        section.willDisplay(indexPath, template.data, cell);
         return;
     }
     if (self.willDisplay) {
@@ -199,6 +208,11 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     if (template.didSelect) {
         template.didSelect(indexPath, template.data);
+        return;
+    }
+    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    if (section.didSelect) {
+        section.didSelect(indexPath, template.data);
         return;
     }
     if (self.didSelect) {
@@ -426,6 +440,8 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
     }];
+    // section 也和 cell 都有 viewClass 属性，同样要注册一下
+    [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
 }
 
 - (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {

@@ -9,6 +9,7 @@
 #import "TTCollectionViewCell.h"
 #import "TTCollectionReusableView.h"
 #import <TTMutableArray/TTMutableArray.h>
+#import "NSArray+TTIndexPathValue.h"
 
 @interface TTCollectionView () <TTMutableArrayObserver, _TTSectionObserver,
                     UICollectionViewDataSource, TTCollectionViewDelegateFlowLayout>
@@ -49,7 +50,7 @@
     if ([_outerDelegate respondsToSelector:@selector(collectionView:layout:alignmentItemsInSection:)]) {
         return [_outerDelegate collectionView:collectionView layout:layout alignmentItemsInSection:section];
     }
-    return TTCollectionItemAlignmentDefault;
+    return self.templateArray[section].alignment;
 }
 
 - (BOOL)collectionView:(UICollectionView *)collectionView
@@ -75,7 +76,7 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
-    Class<TTCellProvider> provider = template.viewClass ? : [TTCollectionViewCell class];
+    Class<TTCellProvider> provider = [self.templateArray tt_viewClassAtIndexPath:indexPath] ? : [TTCollectionViewCell class];
     
     TTCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:[provider cellIdentifier] forIndexPath:indexPath];
     cell.data = template.data;
@@ -106,8 +107,12 @@
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
+    CGFloat fixedWidth = [self.templateArray tt_widthAtIndexPath:indexPath];
+    CGFloat fixedHeight = [self.templateArray tt_heightAtIndexPath:indexPath];
     
-    if (template.width > 0 && template.height > 0) {
+    if (fixedWidth == TTViewAutomaticDimension || fixedHeight == TTViewAutomaticDimension) {
+        // 继续往下
+    } else if (template.width >= 0 && template.height >= 0) {
         return CGSizeMake(template.width, template.height);
     }
     
@@ -181,6 +186,11 @@ minimumLineSpacingForSectionAtIndex:(NSInteger)section {
         template.willDisplay(indexPath, template.data, cell);
         return;
     }
+    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    if (section.willDisplay) {
+        section.willDisplay(indexPath, template.data, cell);
+        return;
+    }
     if (self.willDisplay) {
         self.willDisplay(indexPath, template.data, cell);
         return;
@@ -215,6 +225,11 @@ didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     if (template.didSelect) {
         template.didSelect(indexPath, template.data);
+        return;
+    }
+    TTSectionTemplate *section = self.templateArray[indexPath.section];
+    if (section.didSelect) {
+        section.didSelect(indexPath, template.data);
         return;
     }
     if (self.didSelect) {
@@ -445,6 +460,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
         [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
     }];
+    [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
 }
 
 - (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {

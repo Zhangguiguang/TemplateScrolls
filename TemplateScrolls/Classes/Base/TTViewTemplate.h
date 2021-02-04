@@ -6,14 +6,14 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TTCollectionViewLayout.h"
-#import "TTScrollProtocol.h"
+#import <TTCollectionViewLayout.h>
+#import <TTScrollProtocol.h>
 
-#define TTChainPropertyStatement(ClassName, modifier, propType, propName)      \
-@property (nonatomic, modifier) propType propName;                              \
+#define TTChainPropertyStatement(ClassName, modifier, propType, propName)   \
+@property (nonatomic, modifier) propType propName;                          \
 - (__kindof ClassName * (^)(propType))propName##Set;
 
-#define TTChainPropertyImplement(ClassName, propType, propName)    \
+#define TTChainPropertyImplement(ClassName, propType, propName)     \
 - (__kindof ClassName *(^)(propType))propName##Set {                \
     return ^ClassName *(propType propName) {                        \
         self.propName = propName;                                   \
@@ -22,6 +22,17 @@
 }
 
 NS_ASSUME_NONNULL_BEGIN
+
+/**
+ cell 如果是 TTViewNODimension, 它不能覆盖 section 所设置的统一尺寸
+ 但是 TTViewAutomaticDimension 可以覆盖
+ */
+UIKIT_EXTERN const CGFloat TTViewAutomaticDimension;
+
+/**
+ 默认的尺寸
+ */
+UIKIT_EXTERN const CGFloat TTViewNODimension;
 
 typedef void (^TTCellWillDisplay)(NSIndexPath *indexPath, __nullable id data, __kindof UIView *me);
 typedef void (^TTCellDidSelect)(NSIndexPath *indexPath, __nullable id data);
@@ -142,7 +153,7 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
 @protocol TTTemplateArrayOperator <NSObject>
 
 @required
-@property (nonatomic, readonly) NSMutableArray *templateArray;
+@property (nonatomic, readonly) NSMutableArray<TTSectionTemplate *> *templateArray;
 
 @optional
 

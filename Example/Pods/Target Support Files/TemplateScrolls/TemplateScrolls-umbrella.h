@@ -10,6 +10,7 @@
 #endif
 #endif
 
+#import "NSArray+TTIndexPathValue.h"
 #import "TemplateScrolls.h"
 #import "TTPrivate.h"
 #import "TTScrollProtocol.h"
