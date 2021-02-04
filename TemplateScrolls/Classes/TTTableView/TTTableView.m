@@ -73,7 +73,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    TTTableCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
+    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     // 固定的高度
     if (template.height > 0) {
         return template.height;
@@ -392,7 +392,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 #pragma mark - TTMutableArrayObserver
 
 - (void)mutableArray:(NSMutableArray *)array
-    didInsertObjects:(NSArray<TTTableSectionTemplate *> *)objects
+    didInsertObjects:(NSArray<TTSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
     [self _registerViewWithSections:objects];
@@ -407,7 +407,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (void)mutableArray:(NSMutableArray *)array
-   didReplaceObjects:(NSArray<TTTableSectionTemplate *> *)objects
+   didReplaceObjects:(NSArray<TTSectionTemplate *> *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
     [self _registerViewWithSections:objects];
@@ -420,22 +420,22 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     [self _setObserverForSections:objects observer:nil];
 }
 
-- (void)_registerViewWithSections:(NSArray<TTTableSectionTemplate *> *)sections {
-    [sections enumerateObjectsUsingBlock:^(TTTableSectionTemplate *section, NSUInteger idx, BOOL *stop) {
+- (void)_registerViewWithSections:(NSArray<TTSectionTemplate *> *)sections {
+    [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
         [self _registerReusableView:section.header isHeader:YES];
         [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
     }];
 }
 
-- (void)_registerCellWithCells:(NSArray<TTTableCellTemplate *> *)cells {
-    [cells enumerateObjectsUsingBlock:^(TTTableCellTemplate *obj, NSUInteger idx, BOOL *stop) {
+- (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {
+    [cells enumerateObjectsUsingBlock:^(TTCellTemplate *obj, NSUInteger idx, BOOL *stop) {
         Class<TTCellProvider> provider = obj.viewClass ? : [TTTableViewCell class];
         [self registerClass:provider forCellReuseIdentifier:[provider cellIdentifier]];
     }];
 }
 
-- (void)_registerReusableView:(TTTableReusableViewTemplate *)template isHeader:(BOOL)isHeader {
+- (void)_registerReusableView:(TTReusableViewTemplate *)template isHeader:(BOOL)isHeader {
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTTableReusableView class];
     if (isHeader) {
         [self registerClass:provider forHeaderFooterViewReuseIdentifier:[provider headerIdentifier]];
@@ -444,7 +444,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (void)_setObserverForSections:(NSArray<TTTableSectionTemplate *> *)sections
+- (void)_setObserverForSections:(NSArray<TTSectionTemplate *> *)sections
                        observer:(id<_TTSectionObserver>)observer {
     [sections makeObjectsPerformSelector:@selector(setObserver:) withObject:observer];
 }

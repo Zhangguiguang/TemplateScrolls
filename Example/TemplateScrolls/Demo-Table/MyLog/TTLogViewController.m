@@ -18,7 +18,7 @@
     NSError *error = nil;
     NSArray<NSDictionary *> *dataArray = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
     
-    TTTableSectionTemplate *section = [TTSectionTemplate new];
+    TTSectionTemplate *section = [TTSectionTemplate new];
     section.allowsMultipleSelection = NO;
     section.forceSelection = NO;
     [dataArray enumerateObjectsUsingBlock:^(NSDictionary *obj, NSUInteger idx, BOOL *stop) {
@@ -26,7 +26,7 @@
         [model setValuesForKeysWithDictionary:obj];
         model.title = [NSString stringWithFormat:@"%lu - %@", idx, model.title];
         
-        TTTableCellTemplate *cell = [TTCellTemplate new];
+        TTCellTemplate *cell = [TTCellTemplate new];
         cell.viewClass = [TTMessageCell class];
         cell.data = model;
         cell.height = model.height;

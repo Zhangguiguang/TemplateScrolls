@@ -13,7 +13,7 @@
 @implementation TTCellUpdateViewController
 
 - (void)makeSkeleton {
-    TTTableSectionTemplate *section = [TTSectionTemplate new];
+    TTSectionTemplate *section = [TTSectionTemplate new];
     section.allowsMultipleSelection = YES;
     
     {
@@ -22,9 +22,7 @@
         model.msg = @"点击这行，可以在它下面动态的添加一行 Cell";
         model.time = @"2020/01/02";
 
-        TTTableCellTemplate *cell = [TTCellTemplate new];
-        cell.viewClass = [TTMessageCell class];
-        cell.data = model;
+        TTCellTemplate *cell = TTCellTemplate.make.viewClassSet([TTMessageCell class]).dataSet(model);
         tt_weakify(self);
         cell.didSelect = ^(NSIndexPath *indexPath, id data) {
             tt_strongify(self);
@@ -33,13 +31,8 @@
         [section.cellArray addObject:cell];
     }
     {
-        TTTableCellTemplate *space1 = [TTCellTemplate new];
-        space1.height = 10;
-        TTTableCellTemplate *space2 = [TTCellTemplate new];
-        space2.height = 10;
-
-        [section.cellArray addObject:space1];
-        [section.cellArray addObject:space2];
+        [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
+        [section.cellArray addObject:TTCellTemplate.make.heightSet(10)];
     }
     {
         TTMessageModel *model = [TTMessageModel new];
@@ -47,7 +40,7 @@
         model.msg = @"点击这行，可以删除在它上面的一行 Cell";
         model.time = @"2020/01/02";
 
-        TTTableCellTemplate *cell = [TTCellTemplate new];
+        TTCellTemplate *cell = [TTCellTemplate new];
         cell.viewClass = [TTMessageCell class];
         cell.data = model;
         tt_weakify(self);
@@ -63,7 +56,7 @@
         model.msg = @"点击这行，可以更改这行的数据";
         model.time = @"2020/01/02";
 
-        TTTableCellTemplate *cell = [TTCellTemplate new];
+        TTCellTemplate *cell = [TTCellTemplate new];
         cell.viewClass = [TTMessageCell class];
         cell.data = model;
         tt_weakify(self);
@@ -91,7 +84,7 @@
     formater.dateFormat = @"yyyy/MM/dd";
     model.time = [formater stringFromDate:[NSDate date]];
 
-    TTTableCellTemplate *cell = [TTCellTemplate new];
+    TTCellTemplate *cell = [TTCellTemplate new];
     cell.viewClass = [TTMessageCell class];
     cell.data = model;
 

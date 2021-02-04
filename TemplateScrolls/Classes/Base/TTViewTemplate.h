@@ -6,47 +6,50 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TTCollectionViewLayout.h"
+#import "TTScrollProtocol.h"
+
+#define TTChainPropertyStatement(ClassName, modifier, propType, propName)      \
+@property (nonatomic, modifier) propType propName;                              \
+- (__kindof ClassName * (^)(propType))propName##Set;
+
+#define TTChainPropertyImplement(ClassName, propType, propName)    \
+- (__kindof ClassName *(^)(propType))propName##Set {                \
+    return ^ClassName *(propType propName) {                        \
+        self.propName = propName;                                   \
+        return self;                                                \
+    };                                                              \
+}
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TTViewTemplate <ViewClass> : NSObject
+typedef void (^TTCellWillDisplay)(NSIndexPath *indexPath, __nullable id data, __kindof UIView *me);
+typedef void (^TTCellDidSelect)(NSIndexPath *indexPath, __nullable id data);
+typedef void (^TTReusableViewWillDisplay)(NSInteger section, __nullable id data, __kindof UIView *me);
 
-/**
- 视图的类型
- */
-@property (nonatomic, strong) ViewClass viewClass;
-
-/**
- 视图的数据
- */
-@property (nonatomic, strong) id data;
-
-/**
- 视图的固定宽度
- */
-@property (nonatomic, assign) CGFloat width;
-
-/**
- 视图的固定高度
- */
-@property (nonatomic, assign) CGFloat height;
-
-@end
 
 /**
  Cell 的配置类
  */
-@interface TTCellTemplate <CellClass, UICellType> : TTViewTemplate <CellClass>
+@interface TTCellTemplate : NSObject
+
+@property (nonatomic, readonly, class) TTCellTemplate *make;
+
+// Cell 可配置的属性，支持链式语法
+TTChainPropertyStatement(TTCellTemplate, strong, Class<TTCellProvider>, viewClass);
+TTChainPropertyStatement(TTCellTemplate, strong, id, data);
+TTChainPropertyStatement(TTCellTemplate, assign, CGFloat, width);
+TTChainPropertyStatement(TTCellTemplate, assign, CGFloat, height);
 
 /**
  可配置该 Cell 将出现时的事件
  */
-@property (nonatomic, copy) void (^willDisplay)(NSIndexPath *indexPath, __nullable id data, __kindof UICellType me);
+@property (nonatomic, copy) TTCellWillDisplay willDisplay;
 
 /**
  可配置该 Cell 被点击时的事件
  */
-@property (nonatomic, copy) void (^didSelect)(NSIndexPath *indexPath, __nullable id data);
+@property (nonatomic, copy) TTCellDidSelect didSelect;
 
 /**
  如果要修改数据，并刷新视图，可以使用这个方法，将所有的修改放入到 block 中
@@ -55,15 +58,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
+
+
 /**
  Header Footer 的配置类
  */
-@interface TTReusableViewTemplate <ViewClass, UIViewType> : TTViewTemplate <ViewClass>
+@interface TTReusableViewTemplate : NSObject
+
+@property (nonatomic, readonly, class) TTReusableViewTemplate *make;
+
+// Header Footer 可配置的属性，支持链式语法
+TTChainPropertyStatement(TTReusableViewTemplate, strong, Class<TTReusableViewProvider>, viewClass);
+TTChainPropertyStatement(TTReusableViewTemplate, strong, id, data);
+TTChainPropertyStatement(TTReusableViewTemplate, assign, CGFloat, height);
 
 /**
  可配置该 View 将出现时的事件
  */
-@property (nonatomic, copy) void (^willDisplay)(NSInteger section, __nullable id data, __kindof UIView *me);
+@property (nonatomic, copy) TTReusableViewWillDisplay willDisplay;
 
 // 不支持
 //- (void)updateView:(void (^)(TTReusableViewTemplate *tt))block;
@@ -72,12 +85,23 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 
-@interface TTSectionTemplate <CellTemplate, ReusableViewTemplate> : NSObject
+@interface TTSectionTemplate : NSObject
 
-@property (null_resettable, nonatomic, strong) ReusableViewTemplate header;
-@property (null_resettable, nonatomic, strong) ReusableViewTemplate footer;
+@property (nonatomic, readonly, class) TTSectionTemplate *make;
 
-@property (nonatomic, readonly) NSMutableArray<CellTemplate> *cellArray;
+// Section 支持一套默认的 Cell 配置
+TTChainPropertyStatement(TTSectionTemplate, strong, Class<TTCellProvider>, viewClass);
+TTChainPropertyStatement(TTSectionTemplate, strong, id, data);
+TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, width);
+TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, height);
+@property (nonatomic, copy) TTCellWillDisplay willDisplay;
+@property (nonatomic, copy) TTCellDidSelect didSelect;
+
+
+@property (null_resettable, nonatomic, strong) TTReusableViewTemplate *header;
+@property (null_resettable, nonatomic, strong) TTReusableViewTemplate *footer;
+
+@property (nonatomic, readonly) NSMutableArray<TTCellTemplate *> *cellArray;
 
 /**
  可以设置该 Section 的元素单选\多选
@@ -89,23 +113,19 @@ NS_ASSUME_NONNULL_BEGIN
  所有 section.allowsMultipleSelection 都会失效，
  整个 [table|collection]View 都只能选择一个 item
  */
-@property (nonatomic, assign) BOOL allowsMultipleSelection;
+TTChainPropertyStatement(TTSectionTemplate, assign, BOOL, allowsMultipleSelection);
 
 /**
  强制选中（至少要选中一个）
  */
-@property (nonatomic, assign) BOOL forceSelection;
-
-@end
+TTChainPropertyStatement(TTSectionTemplate, assign, BOOL, forceSelection);
 
 
-@interface TTCollectionSectionTemplate <CellTemplate, ReusableViewTemplate> : TTSectionTemplate <CellTemplate, ReusableViewTemplate>
-
-@property (nonatomic, assign) UIEdgeInsets insets;
-
-@property (nonatomic, assign) CGFloat horizontalSpacing;
-
-@property (nonatomic, assign) CGFloat veritcalSpacing;
+#pragma mark - CollectionView Usable
+TTChainPropertyStatement(TTSectionTemplate, assign, UIEdgeInsets, insets);
+TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, horizontalSpacing);
+TTChainPropertyStatement(TTSectionTemplate, assign, CGFloat, verticalSpacing);
+TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, alignment);
 
 @end
 

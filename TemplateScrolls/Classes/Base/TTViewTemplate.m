@@ -8,10 +8,6 @@
 #import "TTViewTemplate.h"
 #import <TTMutableArray/TTMutableArray.h>
 
-@implementation TTViewTemplate
-
-@end
-
 
 @protocol TTCellTemplateDelegate <NSObject>
 - (void)templateDidUpdatedData:(TTCellTemplate *)template;
@@ -22,6 +18,15 @@
 @end
 
 @implementation TTCellTemplate
+
+TTChainPropertyImplement(TTCellTemplate, Class<TTCellProvider>, viewClass)
+TTChainPropertyImplement(TTCellTemplate, id, data)
+TTChainPropertyImplement(TTCellTemplate, CGFloat, width)
+TTChainPropertyImplement(TTCellTemplate, CGFloat, height)
+
++ (TTCellTemplate *)make {
+    return [self new];
+}
 
 - (void)updateView:(void (^)(TTCellTemplate *))block {
     block(self);
@@ -35,6 +40,14 @@
 
 @implementation TTReusableViewTemplate
 
+TTChainPropertyImplement(TTReusableViewTemplate, Class<TTReusableViewProvider>, viewClass)
+TTChainPropertyImplement(TTReusableViewTemplate, id, data)
+TTChainPropertyImplement(TTReusableViewTemplate, CGFloat, height)
+
++ (TTReusableViewTemplate *)make {
+    return [self new];
+}
+
 @end
 
 
@@ -44,6 +57,23 @@
 @end
 
 @implementation TTSectionTemplate
+
+TTChainPropertyImplement(TTSectionTemplate, Class<TTCellProvider>, viewClass)
+TTChainPropertyImplement(TTSectionTemplate, id, data)
+TTChainPropertyImplement(TTSectionTemplate, CGFloat, width)
+TTChainPropertyImplement(TTSectionTemplate, CGFloat, height)
+
+TTChainPropertyImplement(TTSectionTemplate, BOOL, allowsMultipleSelection)
+TTChainPropertyImplement(TTSectionTemplate, BOOL, forceSelection)
+
+TTChainPropertyImplement(TTSectionTemplate, UIEdgeInsets, insets)
+TTChainPropertyImplement(TTSectionTemplate, CGFloat, horizontalSpacing)
+TTChainPropertyImplement(TTSectionTemplate, CGFloat, verticalSpacing)
+TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment)
+
++ (__kindof TTSectionTemplate *)make {
+    return [self new];
+}
 
 - (id)header {
     if (!_header) {

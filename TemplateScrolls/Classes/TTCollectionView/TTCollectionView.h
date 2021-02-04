@@ -12,10 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef TTCellTemplate<Class<TTCellProvider>, UICollectionViewCell *> TTCollectionCellTemplate;
-typedef TTReusableViewTemplate<Class<TTReusableViewProvider>, UICollectionReusableView *> TTCollectionReusableViewTemplate;
-typedef TTCollectionSectionTemplate<TTCollectionCellTemplate *, TTCollectionReusableViewTemplate *> TTCollectionSectionTemplate2;
-typedef NSMutableArray<TTCollectionSectionTemplate2 *> TTCollectionTemplateArray;
+typedef NSMutableArray<TTSectionTemplate *> TTCollectionTemplateArray;
 
 @interface TTCollectionView : UICollectionView <TTTemplateArrayOperator>
 

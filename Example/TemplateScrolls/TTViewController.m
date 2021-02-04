@@ -13,7 +13,7 @@
 
 - (void)makeSkeleton {
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 60;
         section.header.willDisplay = ^(NSInteger section, id data, TTTableReusableView *me) {
             me.textLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightSemibold];
@@ -31,7 +31,7 @@
         [self.templateArray addObject:section];
     }
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 60;
         section.header.willDisplay = ^(NSInteger section, id data, TTTableReusableView *me) {
             me.textLabel.font = [UIFont systemFontOfSize:20 weight:UIFontWeightSemibold];

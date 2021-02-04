@@ -11,10 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef TTCellTemplate<Class<TTCellProvider>, UITableViewCell *> TTTableCellTemplate;
-typedef TTReusableViewTemplate<Class<TTReusableViewProvider>, UITableViewHeaderFooterView *> TTTableReusableViewTemplate;
-typedef TTSectionTemplate<TTTableCellTemplate *, TTTableReusableViewTemplate *> TTTableSectionTemplate;
-typedef NSMutableArray<TTTableSectionTemplate *> TTTableTemplateArray;
+typedef NSMutableArray<TTSectionTemplate *> TTTableTemplateArray;
 
 @interface TTTableView : UITableView <TTTemplateArrayOperator>
 

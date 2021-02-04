@@ -19,7 +19,7 @@
 
 - (void)currentInfo {
     NSMutableString *newData = [NSMutableString stringWithString:@"选项情况：\n"];
-    [self.templateArray enumerateObjectsUsingBlock:^(TTTableSectionTemplate *obj, NSUInteger idx, BOOL *stop) {
+    [self.templateArray enumerateObjectsUsingBlock:^(TTSectionTemplate *obj, NSUInteger idx, BOOL *stop) {
         [newData appendFormat:@"\nSection %ld\n", idx];
         [newData appendFormat:@"是否多选：%d, 是否允许取消：%d\n", obj.allowsMultipleSelection, !obj.forceSelection];
         
@@ -37,7 +37,7 @@
 - (void)makeSkeleton {
     self.tableView.allowsMultipleSelection = YES; // 这一句必须要打开
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 50;
         section.header.willDisplay = ^(NSInteger section, id data, UITableViewHeaderFooterView *me) {
             me.textLabel.text = @"多选的，可取消";
@@ -56,7 +56,7 @@
         [self.templateArray addObject:section];
     }
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 50;
         section.header.willDisplay = ^(NSInteger section, id data, UITableViewHeaderFooterView *me) {
             me.textLabel.text = @"多选的，禁止取消🈲";
@@ -75,7 +75,7 @@
         [self.templateArray addObject:section];
     }
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 50;
         section.header.willDisplay = ^(NSInteger section, id data, UITableViewHeaderFooterView *me) {
             me.textLabel.text = @"单选的，可取消";
@@ -93,7 +93,7 @@
         [self.templateArray addObject:section];
     }
     {
-        TTTableSectionTemplate *section = [TTSectionTemplate new];
+        TTSectionTemplate *section = [TTSectionTemplate new];
         section.header.height = 50;
         section.header.willDisplay = ^(NSInteger section, id data, UITableViewHeaderFooterView *me) {
             me.textLabel.text = @"单选的，禁止取消🚫";

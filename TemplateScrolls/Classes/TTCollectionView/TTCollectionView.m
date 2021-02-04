@@ -155,22 +155,22 @@ referenceSizeForFooterInSection:(NSInteger)section {
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
                         layout:(UICollectionViewLayout *)collectionViewLayout
         insetForSectionAtIndex:(NSInteger)section {
-    TTCollectionSectionTemplate *template = self.templateArray[section];
+    TTSectionTemplate *template = self.templateArray[section];
     return template.insets;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    TTCollectionSectionTemplate *template = self.templateArray[section];
+    TTSectionTemplate *template = self.templateArray[section];
     return template.horizontalSpacing;
 }
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView
                    layout:(UICollectionViewLayout *)collectionViewLayout
 minimumLineSpacingForSectionAtIndex:(NSInteger)section {
-    TTCollectionSectionTemplate *template = self.templateArray[section];
-    return template.veritcalSpacing;
+    TTSectionTemplate *template = self.templateArray[section];
+    return template.verticalSpacing;
 }
 
 - (void)collectionView:(UICollectionView *)collectionView
@@ -290,10 +290,10 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     [self.templateArray removeObjectsAtIndexes:indexes];
 }
 
-- (void)insertSection:(NSInteger)section withTemplate:(TTCollectionSectionTemplate *)tt {
+- (void)insertSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
     [self.templateArray insertObject:tt atIndex:section];
 }
-- (void)reloadSection:(NSInteger)section withTemplate:(TTCollectionSectionTemplate *)tt {
+- (void)reloadSection:(NSInteger)section withTemplate:(TTSectionTemplate *)tt {
     [self.templateArray replaceObjectAtIndex:section withObject:tt];
 }
 - (void)deleteSection:(NSInteger)section {
@@ -439,8 +439,8 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     [self _setObserverForSections:objects observer:nil];
 }
 
-- (void)_registerViewWithSections:(NSArray<TTCollectionSectionTemplate *> *)sections {
-    [sections enumerateObjectsUsingBlock:^(TTCollectionSectionTemplate *section, NSUInteger idx, BOOL *stop) {
+- (void)_registerViewWithSections:(NSArray<TTSectionTemplate *> *)sections {
+    [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
         [self _registerReusableView:section.header isHeader:YES];
         [self _registerReusableView:section.footer isHeader:NO];
         [self _registerCellWithCells:section.cellArray];
@@ -454,7 +454,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     }];
 }
 
-- (void)_registerReusableView:(TTCollectionReusableViewTemplate *)template isHeader:(BOOL)isHeader {
+- (void)_registerReusableView:(TTReusableViewTemplate *)template isHeader:(BOOL)isHeader {
     Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
     if (isHeader) {
         [self registerClass:provider forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
@@ -465,14 +465,14 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (void)_setObserverForSections:(NSArray<TTCollectionSectionTemplate *> *)sections
+- (void)_setObserverForSections:(NSArray<TTSectionTemplate *> *)sections
                        observer:(id<_TTSectionObserver>)observer {
     [sections makeObjectsPerformSelector:@selector(setObserver:) withObject:observer];
 }
 
 #pragma mark - _TTSectionObserver
 
-- (void)section:(TTCollectionSectionTemplate *)section
+- (void)section:(TTSectionTemplate *)section
  didInsertCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
@@ -481,7 +481,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (void)section:(TTCollectionSectionTemplate *)section
+- (void)section:(TTSectionTemplate *)section
  didRemoveCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
@@ -490,7 +490,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (void)section:(TTCollectionSectionTemplate *)section
+- (void)section:(TTSectionTemplate *)section
 didReplaceCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
@@ -499,7 +499,7 @@ didReplaceCells:(NSArray<TTCellTemplate *> *)objects
     }
 }
 
-- (nullable NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTCollectionSectionTemplate *)section
+- (nullable NSArray<NSIndexPath *> *)_indexPathsFromSection:(TTSectionTemplate *)section
                                                     indexes:(NSIndexSet *)indexes {
     __block NSInteger s = [self.templateArray indexOfObject:section];
     if (s == NSNotFound) {
