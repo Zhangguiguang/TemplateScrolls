@@ -173,12 +173,18 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
         TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
         
         if (template.height > 0) {
+            // 该模板有固定高度，不用缓存
             break;
         }
         
         if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
             // 如果之前存储过有效的高度，那就不要再更新高度了
             // 实际运行时出现过前面已经计算了正确的高度，结果后来又进入这个方法，存储了一个错误的高度
+            break;
+        }
+        
+        if (cell != [tableView cellForRowAtIndexPath:indexPath]) {
+            // 该位置将要消失的 cell，与该位置最实时的真实的 cell 如果不是同一个，也不要做缓存
             break;
         }
         
