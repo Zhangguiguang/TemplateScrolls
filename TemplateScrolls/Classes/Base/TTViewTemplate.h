@@ -157,6 +157,12 @@ TTChainPropertyStatement(TTSectionTemplate, assign, TTCollectionItemAlignment, a
 @required
 @property (nonatomic, readonly) NSMutableArray<TTSectionTemplate *> *sections;
 
+/**
+ 对 template 数组的操作，是否自动刷新页面. Default YES
+ @discussion 如果关闭该功能，template 数组就是个普通数组，Cell 的加载需要手动调用
+ */
+@property (nonatomic, assign) BOOL autoload;
+
 @optional
 
 /**

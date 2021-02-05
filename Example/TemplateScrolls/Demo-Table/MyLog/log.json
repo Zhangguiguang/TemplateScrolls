@@ -70,5 +70,10 @@
         "title": "Cell 支持直接使用 data",
         "msg": "如果 Section 统一配置了，那么 section.cells 就可以不需要任何配置，直接插入普通对象 data 就可以渲染出 Cell 了",
         "time": "2021/02/04"
+    },
+    {
+        "title": "支持 autoload 开关",
+        "msg": "autoload 默认开启，如果想要自己手动刷新，可以关闭该功能",
+        "time": "2021/02/05"
     }
 ]

@@ -53,15 +53,25 @@
 
 - (NSArray *)tableTemplates {
     return @[
-        [self dataWithTitle:@"Sample Log" targetVC:@"TTLogViewController"],
-        [self dataWithTitle:@"Cell 插入、删除、更新" targetVC:@"TTCellUpdateViewController"],
-        [self dataWithTitle:@"单选、多选" targetVC:@"TTSelectionViewController"],
+        [self dataWithTitle:@"Sample Log"
+                   targetVC:@"TTLogViewController"],
+        
+        [self dataWithTitle:@"Cell 插入、删除、更新"
+                   targetVC:@"TTCellUpdateViewController"],
+        
+        [self dataWithTitle:@"单选、多选"
+                   targetVC:@"TTSelectionViewController"],
+        
+        [self dataWithTitle:@"自动刷新"
+                   targetVC:@"TTViewAutoLoadViewController"],
+        
     ];
 }
 
 - (NSArray *)collectionTemplates {
     return @[
-        [self dataWithTitle:@"Sample Collection" targetVC:@"TTLogViewController"],
+        [self dataWithTitle:@"Sample Collection"
+                   targetVC:@"TTLogViewController"],
     ];
 }
 

@@ -94,10 +94,17 @@ TTChainPropertyImplement(TTSectionTemplate, TTCollectionItemAlignment, alignment
 - (NSMutableArray *)cells {
     if (!_cells) {
         TTMutableArray *cells = [TTMutableArray array];
-        cells.observer = self;
+        cells.observer = _observer ? self : nil;
         _cells = cells;
     }
     return _cells;
+}
+
+- (void)setObserver:(id<_TTSectionObserver>)observer {
+    _observer = observer;
+    id <TTMutableArrayObserver, TTCellTemplateDelegate> delegate = observer ? self : nil;
+    ((TTMutableArray *)_cells).observer = delegate;
+    [self _setDelegateForCells:_cells delegate:delegate];
 }
 
 #pragma mark - TTViewTemplateDelegate

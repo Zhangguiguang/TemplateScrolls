@@ -21,6 +21,7 @@
 
 @implementation TTTableView
 
+@synthesize autoload = _autoload;
 @synthesize willDisplay = _willDisplay;
 @synthesize didSelect   = _didSelect;
 
@@ -31,6 +32,7 @@
 - (instancetype)initWithFrame:(CGRect)frame style:(UITableViewStyle)style {
     self = [super initWithFrame:frame style:style];
     if (self) {
+        _autoload = YES;
         self.delegate = self;
         self.dataSource = self;
         
@@ -158,7 +160,7 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     }
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(TTTableViewCell *)cell
 forRowAtIndexPath:(NSIndexPath *)indexPath {
     // 处理高度存储的逻辑
     do {
@@ -177,14 +179,20 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
             break;
         }
         
-        if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
-            // 如果之前存储过有效的高度，那就不要再更新高度了
-            // 实际运行时出现过前面已经计算了正确的高度，结果后来又进入这个方法，存储了一个错误的高度
+        if (cell != [tableView cellForRowAtIndexPath:indexPath]) {
+            // 该位置将要消失的 cell，与该位置最实时的真实的 cell 如果不是同一个，也不要做缓存
             break;
         }
         
-        if (cell != [tableView cellForRowAtIndexPath:indexPath]) {
-            // 该位置将要消失的 cell，与该位置最实时的真实的 cell 如果不是同一个，也不要做缓存
+        Class viewClass = [self viewClassAtIndexPath:indexPath];
+        id data = [self cellDataAtIndexPath:indexPath];
+        if (![cell isKindOfClass:viewClass] || cell.data != data) {
+            break;
+        }
+        
+        if ([tableView.fd_indexPathHeightCache existsHeightAtIndexPath:indexPath]) {
+            // 如果之前存储过有效的高度，那就不要再更新高度了
+            // 实际运行时出现过前面已经计算了正确的高度，结果后来又进入这个方法，存储了一个错误的高度
             break;
         }
         
@@ -251,12 +259,24 @@ forRowAtIndexPath:(NSIndexPath *)indexPath {
     return indexPath;
 }
 
+#pragma mark - Setter
+
+- (void)setAutoload:(BOOL)autoload {
+    _autoload = autoload;
+    id<TTMutableArrayObserver, _TTSectionObserver> observer = autoload ? self : nil;
+    ((TTMutableArray *)_sections).observer = observer;
+    [self _setObserverForSections:_sections observer:observer];
+    if (autoload) {
+        [self reloadData];
+    }
+}
+
 #pragma mark - TTTemplateArrayOperator
 
 - (TTTableTemplateArray *)sections {
     if (!_sections) {
         TTMutableArray *temp = [TTMutableArray new];
-        temp.observer = self;
+        temp.observer = _autoload ? self : nil;
         _sections = temp;
     }
     return _sections;

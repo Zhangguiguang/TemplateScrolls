@@ -22,6 +22,7 @@
 
 @implementation TTCollectionView
 
+@synthesize autoload = _autoload;
 @synthesize willDisplay = _willDisplay;
 @synthesize didSelect   = _didSelect;
 
@@ -35,6 +36,7 @@
     
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
+        _autoload = YES;
         self.delegate = self;
         self.dataSource = self;
         
@@ -264,12 +266,24 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     return YES;
 }
 
+#pragma mark - Setter
+
+- (void)setAutoload:(BOOL)autoload {
+    _autoload = autoload;
+    id<TTMutableArrayObserver, _TTSectionObserver> observer = autoload ? self : nil;
+    ((TTMutableArray *)_sections).observer = observer;
+    [self _setObserverForSections:_sections observer:observer];
+    if (autoload) {
+        [self reloadData];
+    }
+}
+
 #pragma mark - TTTemplateArrayOperator
 
 - (TTCollectionTemplateArray *)sections {
     if (!_sections) {
         TTMutableArray *temp = [TTMutableArray new];
-        temp.observer = self;
+        temp.observer = _autoload ? self : nil;
         _sections = temp;
     }
     return _sections;
