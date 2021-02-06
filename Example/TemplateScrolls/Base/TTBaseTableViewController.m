@@ -12,8 +12,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self makeSkeleton];
     [self _makeTableView];
+    [self makeSkeleton];
 }
 
 - (void)_makeTableView {

@@ -13,6 +13,13 @@
 		343E4ACB25C1C63B00FA7DEB /* TTLogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 343E4ACA25C1C63B00FA7DEB /* TTLogViewController.m */; };
 		343E4AEF25C1C83500FA7DEB /* TTMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 343E4AEE25C1C83500FA7DEB /* TTMessageModel.m */; };
 		343E4B0125C1D28500FA7DEB /* TTCellUpdateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 343E4B0025C1D28500FA7DEB /* TTCellUpdateViewController.m */; };
+		347A683125C6D8D200717415 /* TTBaseCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347A683025C6D8D200717415 /* TTBaseCollectionViewController.m */; };
+		347A683825C6DE6B00717415 /* TTCommerceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 347A683725C6DE6B00717415 /* TTCommerceViewController.m */; };
+		347A683D25C6DE9400717415 /* TTCommerceImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 347A683C25C6DE9300717415 /* TTCommerceImageCell.m */; };
+		347A684225C6E03200717415 /* TTCommerceItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 347A684125C6E03200717415 /* TTCommerceItemCell.m */; };
+		347A684725C6E17600717415 /* TTCommerceModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 347A684625C6E17600717415 /* TTCommerceModel.m */; };
+		347A684B25C6E1DF00717415 /* commerce.json in Resources */ = {isa = PBXBuildFile; fileRef = 347A684A25C6E1DF00717415 /* commerce.json */; };
+		34B665FB25C8200A00F0511A /* TTUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 34B665FA25C8200A00F0511A /* TTUtils.m */; };
 		34D1A2BF25C1D58700FA73F5 /* TTSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D1A2BE25C1D58700FA73F5 /* TTSelectionViewController.m */; };
 		34D1A2CB25C1DFBD00FA73F5 /* TTToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D1A2CA25C1DFBD00FA73F5 /* TTToast.m */; };
 		34D1A2D025C1E54200FA73F5 /* TTTableCheckBoxCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 34D1A2CF25C1E54200FA73F5 /* TTTableCheckBoxCell.m */; };
@@ -61,6 +68,19 @@
 		343E4AEE25C1C83500FA7DEB /* TTMessageModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTMessageModel.m; sourceTree = "<group>"; };
 		343E4AFF25C1D28500FA7DEB /* TTCellUpdateViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCellUpdateViewController.h; sourceTree = "<group>"; };
 		343E4B0025C1D28500FA7DEB /* TTCellUpdateViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTCellUpdateViewController.m; sourceTree = "<group>"; };
+		347A682F25C6D8D200717415 /* TTBaseCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTBaseCollectionViewController.h; sourceTree = "<group>"; };
+		347A683025C6D8D200717415 /* TTBaseCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTBaseCollectionViewController.m; sourceTree = "<group>"; };
+		347A683625C6DE6B00717415 /* TTCommerceViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCommerceViewController.h; sourceTree = "<group>"; };
+		347A683725C6DE6B00717415 /* TTCommerceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTCommerceViewController.m; sourceTree = "<group>"; };
+		347A683B25C6DE9300717415 /* TTCommerceImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCommerceImageCell.h; sourceTree = "<group>"; };
+		347A683C25C6DE9300717415 /* TTCommerceImageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTCommerceImageCell.m; sourceTree = "<group>"; };
+		347A684025C6E03200717415 /* TTCommerceItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCommerceItemCell.h; sourceTree = "<group>"; };
+		347A684125C6E03200717415 /* TTCommerceItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTCommerceItemCell.m; sourceTree = "<group>"; };
+		347A684525C6E17600717415 /* TTCommerceModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTCommerceModel.h; sourceTree = "<group>"; };
+		347A684625C6E17600717415 /* TTCommerceModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTCommerceModel.m; sourceTree = "<group>"; };
+		347A684A25C6E1DF00717415 /* commerce.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = commerce.json; sourceTree = "<group>"; };
+		34B665F925C8200A00F0511A /* TTUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTUtils.h; sourceTree = "<group>"; };
+		34B665FA25C8200A00F0511A /* TTUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTUtils.m; sourceTree = "<group>"; };
 		34D1A2BD25C1D58700FA73F5 /* TTSelectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTSelectionViewController.h; sourceTree = "<group>"; };
 		34D1A2BE25C1D58700FA73F5 /* TTSelectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TTSelectionViewController.m; sourceTree = "<group>"; };
 		34D1A2C925C1DFBD00FA73F5 /* TTToast.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TTToast.h; sourceTree = "<group>"; };
@@ -141,6 +161,15 @@
 		343E4AC025C1C46F00FA7DEB /* Demo-Collection */ = {
 			isa = PBXGroup;
 			children = (
+				347A683625C6DE6B00717415 /* TTCommerceViewController.h */,
+				347A683725C6DE6B00717415 /* TTCommerceViewController.m */,
+				347A683B25C6DE9300717415 /* TTCommerceImageCell.h */,
+				347A683C25C6DE9300717415 /* TTCommerceImageCell.m */,
+				347A684025C6E03200717415 /* TTCommerceItemCell.h */,
+				347A684125C6E03200717415 /* TTCommerceItemCell.m */,
+				347A684525C6E17600717415 /* TTCommerceModel.h */,
+				347A684625C6E17600717415 /* TTCommerceModel.m */,
+				347A684A25C6E1DF00717415 /* commerce.json */,
 			);
 			path = "Demo-Collection";
 			sourceTree = "<group>";
@@ -150,8 +179,12 @@
 			children = (
 				343E4AC425C1C50200FA7DEB /* TTBaseTableViewController.h */,
 				343E4AC525C1C50200FA7DEB /* TTBaseTableViewController.m */,
+				347A682F25C6D8D200717415 /* TTBaseCollectionViewController.h */,
+				347A683025C6D8D200717415 /* TTBaseCollectionViewController.m */,
 				34D1A2C925C1DFBD00FA73F5 /* TTToast.h */,
 				34D1A2CA25C1DFBD00FA73F5 /* TTToast.m */,
+				34B665F925C8200A00F0511A /* TTUtils.h */,
+				34B665FA25C8200A00F0511A /* TTUtils.m */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -182,6 +215,9 @@
 		349D0243259631B800B94C6C /* DontWantSee */ = {
 			isa = PBXGroup;
 			children = (
+				6003F59C195388D20070C39A /* TTAppDelegate.h */,
+				6003F59D195388D20070C39A /* TTAppDelegate.m */,
+				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 			);
@@ -238,16 +274,13 @@
 		6003F593195388D20070C39A /* Example for TemplateScrolls */ = {
 			isa = PBXGroup;
 			children = (
+				6003F5A5195388D20070C39A /* TTViewController.h */,
+				6003F5A6195388D20070C39A /* TTViewController.m */,
 				343E4AC325C1C4F200FA7DEB /* Base */,
 				343E4ABF25C1C46200FA7DEB /* Demo-Table */,
 				343E4AC025C1C46F00FA7DEB /* Demo-Collection */,
-				6003F59C195388D20070C39A /* TTAppDelegate.h */,
-				6003F59D195388D20070C39A /* TTAppDelegate.m */,
-				6003F5A5195388D20070C39A /* TTViewController.h */,
-				6003F5A6195388D20070C39A /* TTViewController.m */,
-				6003F5A8195388D20070C39A /* Images.xcassets */,
-				349D0243259631B800B94C6C /* DontWantSee */,
 				6003F594195388D20070C39A /* Supporting Files */,
+				349D0243259631B800B94C6C /* DontWantSee */,
 			);
 			name = "Example for TemplateScrolls";
 			path = TemplateScrolls;
@@ -364,6 +397,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = GG;
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 8433J7PT8T;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -394,6 +430,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				347A684B25C6E1DF00717415 /* commerce.json in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
@@ -489,14 +526,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				34D1A2D525C1E54E00FA73F5 /* TTTableRadioCell.m in Sources */,
+				347A684225C6E03200717415 /* TTCommerceItemCell.m in Sources */,
+				347A683D25C6DE9400717415 /* TTCommerceImageCell.m in Sources */,
 				6003F59E195388D20070C39A /* TTAppDelegate.m in Sources */,
+				347A683125C6D8D200717415 /* TTBaseCollectionViewController.m in Sources */,
 				343E4B0125C1D28500FA7DEB /* TTCellUpdateViewController.m in Sources */,
+				347A684725C6E17600717415 /* TTCommerceModel.m in Sources */,
 				34D1A2CB25C1DFBD00FA73F5 /* TTToast.m in Sources */,
 				34D1A2D025C1E54200FA73F5 /* TTTableCheckBoxCell.m in Sources */,
 				343E4AEF25C1C83500FA7DEB /* TTMessageModel.m in Sources */,
 				959687D825CD384D00BD1692 /* TTViewAutoLoadViewController.m in Sources */,
 				34D1A2BF25C1D58700FA73F5 /* TTSelectionViewController.m in Sources */,
 				343E4ACB25C1C63B00FA7DEB /* TTLogViewController.m in Sources */,
+				347A683825C6DE6B00717415 /* TTCommerceViewController.m in Sources */,
+				34B665FB25C8200A00F0511A /* TTUtils.m in Sources */,
 				343E4AC625C1C50200FA7DEB /* TTBaseTableViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* TTViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
@@ -628,6 +671,7 @@
 			baseConfigurationReference = 596247D3DEAE1A5BE6B97D37 /* Pods-TemplateScrolls_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8433J7PT8T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TemplateScrolls/TemplateScrolls-Prefix.pch";
 				INFOPLIST_FILE = "TemplateScrolls/TemplateScrolls-Info.plist";
@@ -645,6 +689,7 @@
 			baseConfigurationReference = C8807D7BC7C59907C7077112 /* Pods-TemplateScrolls_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 8433J7PT8T;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TemplateScrolls/TemplateScrolls-Prefix.pch";
 				INFOPLIST_FILE = "TemplateScrolls/TemplateScrolls-Info.plist";

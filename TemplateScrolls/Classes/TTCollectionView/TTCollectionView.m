@@ -31,18 +31,16 @@
 @synthesize additionalDelegate = _outerDelegate;
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    
     TTCollectionViewLayout *layout = [TTCollectionViewLayout new];
-    
     self = [super initWithFrame:frame collectionViewLayout:layout];
     if (self) {
         _autoload = YES;
         self.delegate = self;
         self.dataSource = self;
+        self.backgroundColor = [UIColor whiteColor];
         
         _layout = layout;
         _layout.delegate = self;
-        _layout.estimatedItemSize = CGSizeMake(44.0, 44.0);
     }
     return self;
 }
@@ -105,14 +103,13 @@
 - (CGSize)collectionView:(UICollectionView *)collectionView
                   layout:(UICollectionViewLayout *)collectionViewLayout
   sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    TTCellTemplate *template = [self cellTemplateAtIndexPath:indexPath];
     CGFloat fixedWidth = [self widthAtIndexPath:indexPath];
     CGFloat fixedHeight = [self heightAtIndexPath:indexPath];
     
     if (fixedWidth == TTViewAutomaticDimension || fixedHeight == TTViewAutomaticDimension) {
         // 继续往下
-    } else if (template.width > 0 && template.height > 0) {
-        return CGSizeMake(template.width, template.height);
+    } else if (fixedWidth > 0 && fixedHeight > 0) {
+        return CGSizeMake(fixedWidth, fixedHeight);
     }
     
     if (@available(iOS 10.0, *)) {
@@ -299,56 +296,29 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     didInsertObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
-    [self _registerViewWithSections:objects];
-    [super insertSections:indexes];
+    // FIXME: insert 还有些问题
+//    [self insertSections:indexes];
+    [self reloadData];
 }
 
 - (void)mutableArray:(NSMutableArray *)array
     didRemoveObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:nil];
-    [super deleteSections:indexes];
+    [self deleteSections:indexes];
 }
 
 - (void)mutableArray:(NSMutableArray *)array
    didReplaceObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:self];
-    [self _registerViewWithSections:objects];
-    [super reloadSections:indexes];
+    [self reloadSections:indexes];
 }
 
 - (void)mutableArray:(NSMutableArray *)array
    beReplacedObjects:(NSArray *)objects
            atIndexes:(NSIndexSet *)indexes {
     [self _setObserverForSections:objects observer:nil];
-}
-
-- (void)_registerViewWithSections:(NSArray<TTSectionTemplate *> *)sections {
-    [sections enumerateObjectsUsingBlock:^(TTSectionTemplate *section, NSUInteger idx, BOOL *stop) {
-        [self _registerReusableView:section.header isHeader:YES];
-        [self _registerReusableView:section.footer isHeader:NO];
-        [self _registerCellWithCells:section.cells];
-    }];
-    [self _registerCellWithCells:(NSArray<TTCellTemplate *> *)sections];
-}
-
-- (void)_registerCellWithCells:(NSArray<TTCellTemplate *> *)cells {
-    [cells enumerateObjectsUsingBlock:^(TTCellTemplate *obj, NSUInteger idx, BOOL *stop) {
-        Class<TTCellProvider> provider = obj.viewClass ? : [TTCollectionViewCell class];
-        [self registerClass:provider forCellWithReuseIdentifier:[provider cellIdentifier]];
-    }];
-}
-
-- (void)_registerReusableView:(TTReusableViewTemplate *)template isHeader:(BOOL)isHeader {
-    Class<TTReusableViewProvider> provider = template.viewClass ? : [TTCollectionReusableView class];
-    if (isHeader) {
-        [self registerClass:provider forSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-        withReuseIdentifier:[provider headerIdentifier]];
-    } else {
-        [self registerClass:provider forSupplementaryViewOfKind:UICollectionElementKindSectionFooter
-        withReuseIdentifier:[provider footerIdentifier]];
-    }
 }
 
 - (void)_setObserverForSections:(NSArray<TTSectionTemplate *> *)sections
@@ -363,7 +333,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
     if (indexPaths.count > 0) {
-        [super insertItemsAtIndexPaths:indexPaths];
+        [self insertItemsAtIndexPaths:indexPaths];
     }
 }
 
@@ -372,7 +342,7 @@ shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
     if (indexPaths.count > 0) {
-        [super deleteItemsAtIndexPaths:indexPaths];
+        [self deleteItemsAtIndexPaths:indexPaths];
     }
 }
 
@@ -381,7 +351,7 @@ didReplaceCells:(NSArray<TTCellTemplate *> *)objects
       atIndexes:(NSIndexSet *)indexes {
     NSArray *indexPaths = [self _indexPathsFromSection:section indexes:indexes];
     if (indexPaths.count > 0) {
-        [super reloadItemsAtIndexPaths:indexPaths];
+        [self reloadItemsAtIndexPaths:indexPaths];
     }
 }
 

@@ -75,5 +75,13 @@
         "title": "支持 autoload 开关",
         "msg": "autoload 默认开启，如果想要自己手动刷新，可以关闭该功能",
         "time": "2021/02/05"
+    },
+    {
+        "title": "⚠️特别注意！！！",
+    },
+    {
+        "title": "Collection View 也支持了",
+        "msg": "Collection View 也支持了配置的功能，简单的 Demo 已完成.",
+        "time": "2021/02/06"
     }
 ]

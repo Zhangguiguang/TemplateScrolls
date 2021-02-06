@@ -13,4 +13,9 @@
 #ifdef __OBJC__
     @import UIKit;
     @import Foundation;
+
+#import "TTUtils.h"
+
+#define RandomColor [UIColor colorWithRed:(arc4random() % 255 / 255.0)  green:(arc4random() % 255 / 255.0) blue:(arc4random() % 255 / 255.0) alpha:0.5]
+
 #endif

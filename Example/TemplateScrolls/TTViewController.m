@@ -71,7 +71,7 @@
 - (NSArray *)collectionTemplates {
     return @[
         [self dataWithTitle:@"Sample Collection"
-                   targetVC:@"TTLogViewController"],
+                   targetVC:@"TTCommerceViewController"],
     ];
 }
 

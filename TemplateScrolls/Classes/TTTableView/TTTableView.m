@@ -35,6 +35,7 @@
         _autoload = YES;
         self.delegate = self;
         self.dataSource = self;
+        self.backgroundColor = [UIColor whiteColor];
         
         self.estimatedRowHeight = 44.0;
         self.estimatedSectionHeaderHeight = 44.0;
