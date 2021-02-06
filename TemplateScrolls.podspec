@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'TemplateScrolls'
-  s.version          = '1.0.1'
+  s.version          = '1.0.2'
   s.summary          = '不需要手动实现 TableView CollectionView 的 dataSource, delegate 协议的滚动列表'
 
 # This description is used to generate tags and improve search results.

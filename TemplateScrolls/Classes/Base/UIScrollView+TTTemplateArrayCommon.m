@@ -8,7 +8,10 @@
 #import "UIScrollView+TTTemplateArrayCommon.h"
 
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wobjc-property-implementation"
 @implementation UIScrollView (TTTemplateArrayCommon)
+#pragma clang diagnostic pop
 
 #pragma mark - Public
 
