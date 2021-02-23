@@ -20,6 +20,10 @@ pod 'TemplateScrolls'
 
 ## Usage
 
+[TemplateScrolls 入门教程]
+
+[TemplateScrolls 进阶教程]
+
 #### 1. import 
 
 ```
@@ -82,3 +86,11 @@ A TableView or CollectionView can be rendered immediately.
 ## License
 
 TemplateScrolls is available under the MIT license. See the LICENSE file for more info.
+
+
+[Constant]:.......
+[TemplateScrolls 入门教程]:
+./Guide/TemplateScrolls_guide1.md
+
+[TemplateScrolls 进阶教程]:
+./Guide/TemplateScrolls_guide2.md
